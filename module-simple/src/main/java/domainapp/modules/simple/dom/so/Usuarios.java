@@ -18,6 +18,7 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
+import domainapp.modules.simple.types.Apellido;
 import domainapp.modules.simple.types.Name;
 
 @DomainService(
@@ -36,8 +37,9 @@ public class Usuarios {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public Usuario create(
-            @Name final String name) {
-        return repositoryService.persist(Usuario.withName(name));
+            @Name final String name,
+            @Apellido final String apellido) {
+        return repositoryService.persist(Usuario.withName(name,apellido));
     }
 
 

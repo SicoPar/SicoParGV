@@ -3,6 +3,7 @@ package domainapp.modules.simple.dom.so;
 import java.util.Comparator;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.isis.applib.annotation.Action;
@@ -29,26 +30,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-
+import domainapp.modules.simple.types.Apellido;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Notes;
 
-
 @javax.persistence.Entity
-@javax.persistence.Table(
-    schema="simple",
-    uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "Usuario__name__UNQ", columnNames = {"NAME"})
-    }
-)
+@javax.persistence.Table(schema = "simple", uniqueConstraints = {
+		@javax.persistence.UniqueConstraint(name = "Usuario__name__UNQ", columnNames = { "NAME" }) })
 @javax.persistence.NamedQueries({
-        @javax.persistence.NamedQuery(
-                name = Usuario.NAMED_QUERY__FIND_BY_NAME_LIKE,
-                query = "SELECT so " +
-                        "FROM Usuario so " +
-                        "WHERE so.name LIKE :name"
-        )
-})
+		@javax.persistence.NamedQuery(name = Usuario.NAMED_QUERY__FIND_BY_NAME_LIKE, query = "SELECT so "
+				+ "FROM Usuario so " + "WHERE so.name LIKE :name") })
 @javax.persistence.EntityListeners(IsisEntityListener.class)
 @DomainObject(logicalTypeName = "simple.Usuario", entityChangePublishing = Publishing.ENABLED)
 @DomainObjectLayout()
@@ -57,84 +48,104 @@ import domainapp.modules.simple.types.Notes;
 @ToString(onlyExplicitlyIncluded = true)
 public class Usuario implements Comparable<Usuario> {
 
-    static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByNameLike";
+	static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByNameLike";
 
-    @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
-    @javax.persistence.Column(name = "id", nullable = false)
-    private Long id;
+	@javax.persistence.Id
+	@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+	@javax.persistence.Column(name = "id", nullable = false)
+	private Long id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
-    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
-    @Getter @Setter
-    private long version;
+	@javax.persistence.Version
+	@javax.persistence.Column(name = "version", nullable = false)
+	@PropertyLayout(fieldSetId = "metadata", sequence = "999")
+	@Getter
+	@Setter
+	private long version;
 
-    public static Usuario withName(String name) {
-        val simpleObject = new Usuario();
-        simpleObject.setName(name);
-        return simpleObject;
-    }
+	public static Usuario withName(String name) {
+		return withName(name, null);
+	}
 
-    @Inject @javax.persistence.Transient RepositoryService repositoryService;
-    @Inject @javax.persistence.Transient TitleService titleService;
-    @Inject @javax.persistence.Transient MessageService messageService;
+	public static Usuario withName(String name, String apellido) {
+		val Usuario = new Usuario();
+		Usuario.setName(name);
+		Usuario.setApellido(apellido);
+		return Usuario;
+	}
 
+	@Inject
+	@javax.persistence.Transient
+	RepositoryService repositoryService;
+	@Inject
+	@javax.persistence.Transient
+	TitleService titleService;
+	@Inject
+	@javax.persistence.Transient
+	MessageService messageService;
 
+   @Title
+	@Name
+	@javax.persistence.Column(length = Name.MAX_LEN, nullable = false)
+	@Getter
+	@Setter
+	@ToString.Include
+	@PropertyLayout(fieldSetId = "name", sequence = "1")
+	private String name;
 
-    @Title
-    @Name
-    @javax.persistence.Column(length = Name.MAX_LEN, nullable = false)
-    @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "1")
-    private String name;
+	@Apellido
+	@Column(length = Apellido.MAX_LEN, nullable = true)
+	@Getter
+	@Setter
+	@ToString.Include
+	@PropertyLayout(fieldSetId = "name", sequence = "2")
+	private String apellido;
 
-    @Notes
-    @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
-    @Getter @Setter
-    @Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
-    private String notes;
+	@Notes
+	@javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
+	@Getter
+	@Setter
+	@Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+	@PropertyLayout(fieldSetId = "name", sequence = "2")
+	private String notes;
 
+	@Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+	@ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
+	public Usuario updateName(@Name final String name, @Apellido final String apellido) {
+		setName(name);
+		setApellido(apellido);
+		return this;
+	}
 
-    @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
-    public Usuario updateName(
-            @Name final String name) {
-        setName(name);
-        return this;
-    }
-    public String default0UpdateName() {
-        return getName();
-    }
-    public String validate0UpdateName(String newName) {
-        for (char prohibitedCharacter : "&%$!".toCharArray()) {
-            if( newName.contains(""+prohibitedCharacter)) {
-                return "Character '" + prohibitedCharacter + "' is not allowed.";
-            }
-        }
-        return null;
-    }
+	public String default0UpdateName() {
+		return getName();
+	}
 
+	public String default1UpdateName() {
+		return getApellido();
+	}
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(
-            associateWith = "name", position = ActionLayout.Position.PANEL,
-            describedAs = "Deletes this object from the persistent datastore")
-    public void delete() {
-        final String title = titleService.titleOf(this);
-        messageService.informUser(String.format("'%s' deleted", title));
-        repositoryService.removeAndFlush(this);
-    }
+	public String validate0UpdateName(String newName) {
+		for (char prohibitedCharacter : "&%$!".toCharArray()) {
+			if (newName.contains("" + prohibitedCharacter)) {
+				return "Character '" + prohibitedCharacter + "' is not allowed.";
+			}
+		}
+		return null;
+	}
 
+	@Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+	@ActionLayout(associateWith = "name", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
+	public void delete() {
+		final String title = titleService.titleOf(this);
+		messageService.informUser(String.format("'%s' deleted", title));
+		repositoryService.removeAndFlush(this);
+	}
 
+	private final static Comparator<Usuario> comparator = Comparator.comparing(Usuario::getName);
 
-    private final static Comparator<Usuario> comparator =
-            Comparator.comparing(Usuario::getName);
-
-    @Override
-    public int compareTo(final Usuario other) {
-        return comparator.compare(this, other);
-    }
+	@Override
+	public int compareTo(final Usuario other) {
+		return comparator.compare(this, other);
+	}
 
 }

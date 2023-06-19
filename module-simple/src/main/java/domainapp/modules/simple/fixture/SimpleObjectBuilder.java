@@ -15,13 +15,14 @@ public class SimpleObjectBuilder extends BuilderScriptWithResult<Usuario> {
 
     @Getter @Setter
     private String name;
+    private String apellido;
 
     @Override
     protected Usuario buildResult(final ExecutionContext ec) {
 
         checkParam("name", ec, String.class);
 
-        return wrap(usuarios).create(name);
+        return wrap(usuarios).create(name,apellido);
     }
 
     // -- DEPENDENCIES
