@@ -5,17 +5,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 
-@Property(maxLength = Apellido.MAX_LEN, optionality = Optionality.OPTIONAL)
-@Parameter(maxLength = Apellido.MAX_LEN, optionality = Optionality.OPTIONAL)
-@ParameterLayout(named = "Apellido")
+@Property(editing = Editing.ENABLED, maxLength = Email.MAX_LEN, optionality = Optionality.OPTIONAL)
+@PropertyLayout(named = "E-mail")
+@Parameter(maxLength = Email.MAX_LEN, optionality = Optionality.OPTIONAL)
+@ParameterLayout(named = "E-mail")
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Apellido {
+public @interface Email {
 
-    int MAX_LEN = 40;
+	int MAX_LEN = 50;
 }

@@ -18,7 +18,10 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
-import domainapp.modules.simple.types.Apellido;
+import domainapp.modules.simple.types.Nombre;
+import domainapp.modules.simple.types.Telefono;
+import domainapp.modules.simple.types.Documento;
+import domainapp.modules.simple.types.Email;
 import domainapp.modules.simple.types.Name;
 
 @DomainService(
@@ -38,8 +41,15 @@ public class Usuarios {
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public Usuario create(
             @Name final String name,
-            @Apellido final String apellido) {
-        return repositoryService.persist(Usuario.withName(name,apellido));
+            @Nombre final String nombre,
+            @Documento final String documento,
+            @Email final String email,
+            @Telefono final String telefono
+            
+    		
+    		
+    		) {
+        return repositoryService.persist(Usuario.withName(name,nombre,documento,email,telefono));
     }
 
 
