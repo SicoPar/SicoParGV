@@ -36,6 +36,7 @@ public class Usuarios {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final UsuarioRepository usuarioRepository;
+    final VehiculoRepository vehiculoRepository;
 
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
@@ -84,6 +85,12 @@ public class Usuarios {
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public List<Usuario> listAll() {
         return usuarioRepository.findAll();
+    }
+    
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    public List<Vehiculo> listAllVehiculos() {
+        return vehiculoRepository.findAll();
     }
 
 
