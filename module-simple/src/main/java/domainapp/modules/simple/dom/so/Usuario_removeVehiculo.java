@@ -8,7 +8,7 @@ import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
-import domainapp.modules.simple.types.CarModelo;
+import domainapp.modules.simple.types.Patente;
 import lombok.RequiredArgsConstructor;
 
 @Action(
@@ -22,8 +22,8 @@ public class Usuario_removeVehiculo {
 
     private final Usuario usuario;
 
-    public Usuario act(@CarModelo final String name) {
-    	vehiculoRepository.findByUsuarioAndName(usuario, name)
+    public Usuario act(@Patente final String patente) {
+    	vehiculoRepository.findByUsuarioAndPatente(usuario, patente)
                 .ifPresent(vehiculo -> repositoryService.remove(vehiculo));
         return usuario;
     }

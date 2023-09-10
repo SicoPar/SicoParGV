@@ -19,6 +19,7 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
 import domainapp.modules.simple.types.Nombre;
+import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Email;
@@ -55,11 +56,11 @@ public class Usuarios {
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public List<Usuario> findByNameLike(
-            @Name final String name) {
+    public List<Vehiculo> findByPatente(
+            @Patente final String patente) {
         return repositoryService.allMatches(
-                Query.named(Usuario.class, Usuario.NAMED_QUERY__FIND_BY_NAME_LIKE)
-                     .withParameter("name", "%" + name + "%"));
+                Query.named(Vehiculo.class, Vehiculo.NAMED_QUERY__FIND_BY_PATENTE)
+                     .withParameter("patente", "%" + patente + "%"));
     }
 
 

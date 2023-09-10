@@ -62,7 +62,7 @@ import javax.persistence.Version;
 @ToString(onlyExplicitlyIncluded = true)
 public class Usuario implements Comparable<Usuario> {
 
-	static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByNameLike";
+	static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByName";
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)

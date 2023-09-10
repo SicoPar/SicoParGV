@@ -8,7 +8,8 @@ import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
-import domainapp.modules.simple.types.CarModelo;
+import domainapp.modules.simple.types.Modelo;
+import domainapp.modules.simple.types.Patente;
 import lombok.RequiredArgsConstructor;
 
 @Action(                                                
@@ -23,10 +24,11 @@ public class Usuario_addvehiculo {
     private final Usuario usuario;                    
 
     public Usuario act(
-            @CarModelo final String name
+            @Patente final String patente,
+            @Modelo final String modelo
             
             ) {
-        repositoryService.persist(new Vehiculo(usuario, name));
+        repositoryService.persist(new Vehiculo(usuario, patente,modelo));
         return usuario;
     }
 

@@ -10,5 +10,5 @@ public interface VehiculoRepository extends Repository<Vehiculo, Long> {
 
     List<Vehiculo> findByUsuario(Usuario usuario);
 
-    Optional<Vehiculo> findByUsuarioAndName(Usuario usuario, String name);
+    Optional<Vehiculo> findByUsuarioAndPatente(Usuario usuario, String patente);
 }

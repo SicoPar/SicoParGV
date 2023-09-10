@@ -9,11 +9,11 @@ import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Property;
 
-@Property(maxLength = CarModelo.MAX_LEN, optionality = Optionality.MANDATORY)
-@Parameter(maxLength = CarModelo.MAX_LEN, optionality = Optionality.MANDATORY)
+@Property(maxLength = Patente.MAX_LEN, optionality = Optionality.MANDATORY)
+@Parameter(maxLength = Patente.MAX_LEN, optionality = Optionality.MANDATORY)
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CarModelo {
+public @interface Patente {
 
     int MAX_LEN = 60;
 }

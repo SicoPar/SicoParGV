@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
@@ -19,10 +21,12 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
+import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
-import domainapp.modules.simple.types.CarModelo;
+import domainapp.modules.simple.types.Modelo;
+import domainapp.modules.simple.types.Patente;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +37,10 @@ import lombok.ToString;
 @Table(
     schema="simple",
     uniqueConstraints = {
-        @UniqueConstraint(name = "Pet__owner_name__UNQ", columnNames = {"owner_id, name"})
-    }
+        @UniqueConstraint(name = "Pet__owner_name__UNQ", columnNames = {"owner_id, patente"})    }
 )
+@NamedQueries({ @NamedQuery(name = Vehiculo.NAMED_QUERY__FIND_BY_PATENTE, query = "SELECT so " + "FROM Vehiculo so "
+		+ "WHERE so.patente LIKE :patente") })
 @javax.persistence.EntityListeners(IsisEntityListener.class)
 @Named("simple.Vehiculo")
 @DomainObject(entityChangePublishing = Publishing.ENABLED)
@@ -44,6 +49,7 @@ import lombok.ToString;
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
 public class Vehiculo implements Comparable<Vehiculo> {
+	static final String NAMED_QUERY__FIND_BY_PATENTE = "Vehiculo.findByPatente";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,9 +65,11 @@ public class Vehiculo implements Comparable<Vehiculo> {
     private long version;
 
 
-    Vehiculo(Usuario usuario, String name) {
+    Vehiculo(Usuario usuario, String patente, String modelo) {
         this.usuario = usuario;
-        this.name = name;
+        this.patente = patente;
+        this.modelo = modelo;
+       
     }
 
 
@@ -71,15 +79,22 @@ public class Vehiculo implements Comparable<Vehiculo> {
     @Getter @Setter
     private Usuario usuario;
 
-    @CarModelo
-    @Column(name = "name", length = CarModelo.MAX_LEN, nullable = false)
+    @Title
+    @Patente
+    @Column(name = "patente", length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter
     @PropertyLayout(fieldSetId = "name", sequence = "2")
-    private String name;
+    private String patente;
+    
+    @Modelo
+    @Column(name = "modelo", length = Modelo.MAX_LEN, nullable = false)
+    @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "3")
+    private String modelo;
 
 
     private final static Comparator<Vehiculo> comparator =
-            Comparator.comparing(Vehiculo::getUsuario).thenComparing(Vehiculo::getName);
+            Comparator.comparing(Vehiculo::getUsuario).thenComparing(Vehiculo::getPatente);
 
     @Override
     public int compareTo(final Vehiculo other) {
