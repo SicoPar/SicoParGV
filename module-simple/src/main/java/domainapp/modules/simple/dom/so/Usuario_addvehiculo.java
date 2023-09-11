@@ -31,6 +31,13 @@ public class Usuario_addvehiculo {
         repositoryService.persist(new Vehiculo(usuario, patente,modelo));
         return usuario;
     }
+    
+    public String validate0Act(final String patente) {
+        return repositoryVehiculo.findByUsuarioAndPatente(usuario,patente).isPresent()
+                ? String.format("El vehiculo con esta patente ingresada, ya esta definida por este usuario", patente)
+                : null;
+    }
 
     @Inject RepositoryService repositoryService;
+    @Inject VehiculoRepository repositoryVehiculo;
 }

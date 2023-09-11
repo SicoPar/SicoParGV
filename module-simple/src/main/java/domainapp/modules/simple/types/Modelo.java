@@ -8,12 +8,25 @@ import java.lang.annotation.Target;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.spec.AbstractSpecification;
 
-@Property(maxLength = Modelo.MAX_LEN, optionality = Optionality.MANDATORY)
-@Parameter(maxLength = Modelo.MAX_LEN, optionality = Optionality.MANDATORY)
+@Property(maxLength = Modelo.MAX_LEN, optionality = Optionality.MANDATORY,mustSatisfy = Modelo.Spec.class)
+@Parameter(maxLength = Modelo.MAX_LEN, optionality = Optionality.MANDATORY,mustSatisfy = Modelo.Spec.class)
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Modelo {
 
     int MAX_LEN = 10;
+    
+	class Spec extends AbstractSpecification<String> {
+		@Override
+		public String satisfiesSafely(String candidate) {
+			for (char prohibitedCharacter : "&%$!".toCharArray()) {
+				if (candidate.contains("" + prohibitedCharacter)) {
+					return "Caracter '" + prohibitedCharacter + "' no esta permitido.";
+				}
+			}
+			return null;
+		}
+	}
 }

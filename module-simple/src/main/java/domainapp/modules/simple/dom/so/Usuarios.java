@@ -40,7 +40,7 @@ public class Usuarios {
 
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
+    @ActionLayout(promptStyle = PromptStyle.INLINE)
     public Usuario create(
             @Name final String name,
             @Nombre final String nombre,
