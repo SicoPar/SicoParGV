@@ -60,6 +60,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>gestion-jpa-module-simple</artifactId>
         </dependency>
+   
 
         <!-- isis -->
         <dependency>
