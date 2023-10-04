@@ -9,19 +9,20 @@ import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureScript;
 import org.apache.isis.testing.fixtures.applib.modules.ModuleWithFixtures;
 
 import domainapp.modules.simple.dom.so.Usuario;
+import domainapp.modules.simple.dom.so.Viaje;
 
 @Configuration
 @ComponentScan
 @EnableJpaRepositories
-@EntityScan(basePackageClasses = {SimpleModule.class})
-public class SimpleModule implements ModuleWithFixtures {
+@EntityScan(basePackageClasses = {ViajesModule.class})
+public class ViajesModule implements ModuleWithFixtures {
 
     @Override
     public FixtureScript getTeardownFixture() {
         return new FixtureScript() {
             @Override
             protected void execute(ExecutionContext executionContext) {
-                repositoryService.removeAll(Usuario.class);
+                repositoryService.removeAll(Viaje.class);
             }
         };
     }

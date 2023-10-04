@@ -35,6 +35,7 @@
                 <artifactId>gestion-jpa-module-simple</artifactId>
                 <version>${project.version}</version>
             </dependency>
+  
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>simpleapp-jpa-module-simple-tests</artifactId>
@@ -68,6 +69,9 @@
 
     <modules>
         <module>module-simple</module>
+    
+
+
 
         <module>webapp</module>
 
