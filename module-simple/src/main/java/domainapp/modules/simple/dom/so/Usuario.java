@@ -1,5 +1,7 @@
 package domainapp.modules.simple.dom.so;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 
 import javax.inject.Inject;
@@ -51,9 +53,9 @@ import javax.persistence.Version;
 
 @Entity
 @Table(schema = "simple", uniqueConstraints = {
-		@UniqueConstraint(name = "Usuario__name__UNQ", columnNames = { "NAME" }) })
+		@UniqueConstraint(name = "Usuario__apellido__UNQ", columnNames = { "apellido" }) })
 @NamedQueries({ @NamedQuery(name = Usuario.NAMED_QUERY__FIND_BY_NAME_LIKE, query = "SELECT so " + "FROM Usuario so "
-		+ "WHERE so.name LIKE :name") })
+		+ "WHERE so.apellido LIKE :name") })
 @EntityListeners(IsisEntityListener.class)
 @DomainObject(logicalTypeName = "simple.Usuario", entityChangePublishing = Publishing.ENABLED)
 @DomainObjectLayout()
@@ -62,7 +64,7 @@ import javax.persistence.Version;
 @ToString(onlyExplicitlyIncluded = true)
 public class Usuario implements Comparable<Usuario> {
 
-	static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByName";
+	static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Usuario.findByApellido";
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
@@ -76,15 +78,16 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	private long version;
 
-	public static Usuario withName(String name) {
-		return withName(name, null,null,null,null);
+	public static Usuario withName(String apellido) {
+		return withName(apellido, null,null,null,null,null);
 	}
 
-	public static Usuario withName(String name, String nombre,String documento , String email , String telefono) {
+	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento, String email , String telefono) {
 		val Usuario = new Usuario();
-		Usuario.setName(name);
+		Usuario.setApellido(apellido);
 		Usuario.setNombre(nombre);
 		Usuario.setDocumento(documento);
+		Usuario.setFechaNacimiento(fecha_nacimiento);
 		Usuario.setEmail(email);
 		Usuario.setTelefono(telefono);
 		return Usuario;
@@ -103,7 +106,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Title
 
 	public String Titulito() {
-		return getName() + (", " + getNombre() + "");
+		return getApellido() + (", " + getNombre() + "");
 	}
 
 	@Nombre
@@ -120,7 +123,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	@ToString.Include
 	@PropertyLayout(fieldSetId = "name", sequence = "1")
-	private String name;
+	private String apellido;
 
 	@Documento
 	@Column(length = Documento.MAX_LEN, nullable = true)
@@ -128,6 +131,13 @@ public class Usuario implements Comparable<Usuario> {
 	@Getter
 	@Setter
 	private String documento;
+	
+	
+	@Column(name = "fecha_nacimiento", nullable = false)
+	@Getter
+	@Setter
+	@PropertyLayout(fieldSetId = "name", sequence = "2")
+	private LocalDate fechaNacimiento;
 
 	@Email
 	@Column(length = Documento.MAX_LEN, nullable = true)
@@ -153,14 +163,14 @@ public class Usuario implements Comparable<Usuario> {
 
 	@Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 	@ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
-	public Usuario updateName(@Name final String name, @Nombre final String nombre) {
-		setName(name);
+	public Usuario updateName(@Name final String apellido, @Nombre final String nombre) {
+		setApellido(apellido);
 		setNombre(nombre);
 		return this;
 	}
 
 	public String default0UpdateName() {
-		return getName();
+		return getApellido();
 	}
 
 	public String default1UpdateName() {
@@ -184,7 +194,7 @@ public class Usuario implements Comparable<Usuario> {
 		repositoryService.removeAndFlush(this);
 	}
 
-	private final static Comparator<Usuario> comparator = Comparator.comparing(Usuario::getName);
+	private final static Comparator<Usuario> comparator = Comparator.comparing(Usuario::getApellido);
 
 	@Override
 	public int compareTo(final Usuario other) {

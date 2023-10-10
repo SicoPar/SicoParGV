@@ -30,7 +30,7 @@ class CustomController {
 
     @GetMapping("/custom/simpleObjects")
     List<Usuario> all() {
-        return call("sven", usuarios::listAll)
+        return call("sven", usuarios::ListaDeUsuarios)
                 .orElse(Collections.<Usuario>emptyList());
     }
 

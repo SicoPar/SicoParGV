@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    List<Usuario> findByNameContaining(final String name);
+    List<Usuario> findByApellidoContaining(final String apellido);
 
-    Usuario findByName(final String name);
+    Usuario findByApellido(final String apellido);
 
 }
