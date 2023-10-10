@@ -16,6 +16,7 @@ import org.apache.isis.applib.annotation.Projecting;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Where;
 
+import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.so.Usuario;
 import domainapp.modules.simple.dom.so.Vehiculo;
 import domainapp.modules.simple.dom.so.Viaje;
@@ -43,7 +44,8 @@ public class ViajePlusUsuario {
     ViajePlusUsuario(Viaje viaje) {this.viaje = viaje;}
 
     public Vehiculo getVehiculo() {return viaje.getVehiculo();}
-//    public String getRazon() {return viaje.getRazon();}
+    public Destino getDestino() {return viaje.getDestino();}
+
     public LocalDateTime getViajeAt() {return viaje.getVisitAt();}
 
     public Usuario getUsuario() {

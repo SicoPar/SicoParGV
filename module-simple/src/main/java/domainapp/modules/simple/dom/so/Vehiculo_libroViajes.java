@@ -12,18 +12,26 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.clock.ClockService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
+import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.types.Razon;
 import lombok.RequiredArgsConstructor;
 
 @Action(semantics = SemanticsOf.IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-@ActionLayout(associateWith = "simple", sequence = "1")
+@ActionLayout(associateWith = "vehiculo", sequence = "1") // Cambio de "simple" a "vehiculo"
 @RequiredArgsConstructor
 public class Vehiculo_libroViajes {
 
-	private final Vehiculo vehiculo;
+	public final Vehiculo vehiculo;
+	public final Destino destino;
 
-	public Viaje act(LocalDateTime visitAt) {
-		return repositoryService.persist(new Viaje(vehiculo, visitAt));
+	 public Vehiculo_libroViajes(Vehiculo vehiculo) {
+	        this.vehiculo = vehiculo;
+	        this.destino = null; // Opcional: Puedes inicializar destino aquí si es necesario
+	    }
+	 
+
+	public Viaje act(Destino destino,LocalDateTime visitAt) {
+		return repositoryService.persist(new Viaje(vehiculo, destino, visitAt));
 	}
 
 	public String validate0Act(LocalDateTime visitAt) {

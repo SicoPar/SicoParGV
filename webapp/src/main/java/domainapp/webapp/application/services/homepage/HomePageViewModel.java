@@ -9,6 +9,9 @@ import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.HomePage;
 import org.apache.isis.applib.annotation.Nature;
 
+import domainapp.modules.simple.dom.destino.Destino;
+import domainapp.modules.simple.dom.destino.DestinoRepository;
+import domainapp.modules.simple.dom.destino.Destinos;
 import domainapp.modules.simple.dom.so.Usuario;
 import domainapp.modules.simple.dom.so.UsuarioRepository;
 import domainapp.modules.simple.dom.so.Usuarios;
@@ -29,24 +32,33 @@ public class HomePageViewModel {
 	}
 
 	public List<Usuario> getUsuarios() {
-		return usuario.listAll();
+		return usuario.ListaDeUsuarios();
 	}
 
 	public List<Vehiculo> getVehiculos() {
 		return vehiculoRepository.findAll();
 	}
-
-	public List<Viaje> getViajes() {
-		return usuario.listAllViajes();
+	public List<Destino> getDestinos() {
+		return destino.listAll();
 	}
+
+	public List<ViajePlusUsuario> getViaje() {
+        return viajeRepository.findAll()
+                .stream()
+                .map(ViajePlusUsuario::new)
+                .collect(Collectors.toList());
+    }
 
 	@Inject
 	Usuarios usuario;
+	@Inject
+	Destinos destino;
 	@Inject
 	ViajeRepository viajeRepository;
 	@Inject
 	UsuarioRepository usuarioRepository;
 	@Inject
 	VehiculoRepository vehiculoRepository;
+
 
 }

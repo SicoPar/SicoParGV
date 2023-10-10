@@ -3,6 +3,7 @@ package domainapp.modules.simple.dom.so;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.Column;
@@ -29,6 +30,8 @@ import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.applib.services.title.TitleService;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
+import domainapp.modules.simple.dom.destino.Destino;
+import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.types.Razon;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -62,10 +65,11 @@ public class Viaje implements Comparable<Viaje> {
 	@Setter
 	private long version;
 
-	Viaje(Vehiculo vehiculo, LocalDateTime visitAt) {
+	 public Viaje(Vehiculo vehiculo,Destino destino, LocalDateTime visitAt) {
 		this.vehiculo = vehiculo;
+		this.destino = destino;
 		this.visitAt = visitAt;
-//		this.razon = razon;
+		
 	}
 
 	public String title() {
@@ -81,6 +85,13 @@ public class Viaje implements Comparable<Viaje> {
 	@Getter
 	@Setter
 	private Vehiculo vehiculo;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "destino_id")
+	@PropertyLayout(fieldSetId = "name", sequence = "3")
+	@Getter
+	@Setter
+	private Destino destino;
 
 	@Column(name = "visitAt", nullable = false)
 	@Getter
@@ -102,8 +113,11 @@ public class Viaje implements Comparable<Viaje> {
 	public int compareTo(final Viaje other) {
 		return comparator.compare(this, other);
 	}
+	
+
 
 	@Inject
 	@Transient
 	TitleService titleService;
+  
 }
