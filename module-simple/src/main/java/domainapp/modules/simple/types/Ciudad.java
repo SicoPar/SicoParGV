@@ -13,16 +13,15 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
-
-@Property(maxLength = Documento.MAX_LEN,mustSatisfy = Documento.Spec.class)
-@Parameter(maxLength = Documento.MAX_LEN,mustSatisfy = Documento.Spec.class)
-@ParameterLayout(named = "Documento")
-@PropertyLayout(named = "Documento")
+@Property(maxLength = Ciudad.MAX_LEN,mustSatisfy = Ciudad.Spec.class)
+@Parameter(maxLength = Ciudad.MAX_LEN,mustSatisfy = Ciudad.Spec.class)
+@ParameterLayout(named = "Ciudad")
+@PropertyLayout(named = "Ciudad")
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Documento {
+public @interface Ciudad {
 
-	int MAX_LEN = 30;
+	int MAX_LEN = 40;
 	
 	class Spec extends AbstractSpecification<String> {
 		@Override

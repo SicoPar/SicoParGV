@@ -34,6 +34,10 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import domainapp.modules.simple.types.Nombre;
+import domainapp.modules.simple.enumeradores.Genero;
+import domainapp.modules.simple.enumeradores.Licencia;
+import domainapp.modules.simple.enumeradores.Sector;
+import domainapp.modules.simple.types.Ciudad;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Email;
 import domainapp.modules.simple.types.Name;
@@ -42,6 +46,8 @@ import domainapp.modules.simple.types.Telefono;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -55,7 +61,7 @@ import javax.persistence.Version;
 @Table(schema = "simple", uniqueConstraints = {
 		@UniqueConstraint(name = "Usuario__apellido__UNQ", columnNames = { "apellido" }) })
 @NamedQueries({ @NamedQuery(name = Usuario.NAMED_QUERY__FIND_BY_NAME_LIKE, query = "SELECT so " + "FROM Usuario so "
-		+ "WHERE so.apellido LIKE :name") })
+		+ "WHERE so.apellido LIKE :apellido") })
 @EntityListeners(IsisEntityListener.class)
 @DomainObject(logicalTypeName = "simple.Usuario", entityChangePublishing = Publishing.ENABLED)
 @DomainObjectLayout()
@@ -79,15 +85,19 @@ public class Usuario implements Comparable<Usuario> {
 	private long version;
 
 	public static Usuario withName(String apellido) {
-		return withName(apellido, null,null,null,null,null);
+		return withName(apellido, null,null,null,null,null,null,null,null,null);
 	}
 
-	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento, String email , String telefono) {
+	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono) {
 		val Usuario = new Usuario();
 		Usuario.setApellido(apellido);
 		Usuario.setNombre(nombre);
 		Usuario.setDocumento(documento);
 		Usuario.setFechaNacimiento(fecha_nacimiento);
+		Usuario.setSector(sector);
+		Usuario.setCiudad(ciudad);
+		Usuario.setGenero(genero);
+		Usuario.setLicencia(licencia);
 		Usuario.setEmail(email);
 		Usuario.setTelefono(telefono);
 		return Usuario;
@@ -126,7 +136,7 @@ public class Usuario implements Comparable<Usuario> {
 	private String apellido;
 
 	@Documento
-	@Column(length = Documento.MAX_LEN, nullable = true)
+	@Column(length = Documento.MAX_LEN, nullable = false)
 	@PropertyLayout(fieldSetId = "name", sequence = "3")
 	@Getter
 	@Setter
@@ -136,8 +146,35 @@ public class Usuario implements Comparable<Usuario> {
 	@Column(name = "fecha_nacimiento", nullable = false)
 	@Getter
 	@Setter
-	@PropertyLayout(fieldSetId = "name", sequence = "2")
+	
+	@PropertyLayout(fieldSetId = "name", sequence = "4")
 	private LocalDate fechaNacimiento;
+	
+	@Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "empresa", sequence = "1")     
+	private Sector sector;
+	
+	
+	@Ciudad
+	@Column(length = Ciudad.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.5")
+	@Getter
+	@Setter
+	private String ciudad;	
+	
+	@Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "name", sequence = "5")     
+	private Genero genero;
+	
+	@Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "empresa", sequence = "2")     
+	private Licencia licencia;
 
 	@Email
 	@Column(length = Documento.MAX_LEN, nullable = true)
@@ -162,7 +199,7 @@ public class Usuario implements Comparable<Usuario> {
 	private String notes;
 
 	@Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-	@ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
+	@ActionLayout(associateWith = "apellido", promptStyle = PromptStyle.INLINE)
 	public Usuario updateName(@Name final String apellido, @Nombre final String nombre) {
 		setApellido(apellido);
 		setNombre(nombre);
@@ -187,8 +224,8 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	@Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-	@ActionLayout(associateWith = "name", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
-	public void delete() {
+	@ActionLayout(associateWith = "simple", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
+	public void Eliminar() {
 		final String title = titleService.titleOf(this);
 		messageService.informUser(String.format("'%s' deleted", title));
 		repositoryService.removeAndFlush(this);

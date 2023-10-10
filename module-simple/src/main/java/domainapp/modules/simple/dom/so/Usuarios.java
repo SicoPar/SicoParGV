@@ -22,6 +22,10 @@ import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
+import domainapp.modules.simple.enumeradores.Genero;
+import domainapp.modules.simple.enumeradores.Licencia;
+import domainapp.modules.simple.enumeradores.Sector;
+import domainapp.modules.simple.types.Ciudad;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Email;
 import domainapp.modules.simple.types.Name;
@@ -40,10 +44,10 @@ public class Usuarios {
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(promptStyle = PromptStyle.INLINE)
 	public Usuario CrearUsuario(@Name final String apellido, @Nombre final String nombre, @Documento final String documento,
-			final LocalDate fecha_nacimiento, @Email final String email, @Telefono final String telefono
+			final LocalDate fecha_nacimiento,Sector sectores,@Ciudad String ciudad,Genero genero,Licencia licencia, @Email final String email, @Telefono final String telefono
 
 	) {
-		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento, email, telefono));
+		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento,sectores,ciudad,genero,licencia,email, telefono));
 	}
 
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
