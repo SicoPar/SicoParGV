@@ -27,7 +27,7 @@
                     <collection id="vehiculos" defaultView="table"/>
                 </bs3:col>
                  <bs3:col span="4">
-                    <collection id="viajes" defaultView="table"/>
+                    <collection id="destinos" defaultView="table"/>
                 </bs3:col>
             </bs3:row>
         </bs3:col>

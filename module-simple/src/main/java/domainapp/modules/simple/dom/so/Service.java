@@ -44,7 +44,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Control implements Comparable<Control> {
+public class Service implements Comparable<Service> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,7 +60,7 @@ public class Control implements Comparable<Control> {
     private long version;
 
 
-    Control(Vehiculo vehiculo, String name) {
+    Service(Vehiculo vehiculo, String name) {
         this.vehiculo = vehiculo;
         this.name = name;
     }
@@ -79,11 +79,11 @@ public class Control implements Comparable<Control> {
     private String name;
 
 
-    private final static Comparator<Control> comparator =
-            Comparator.comparing(Control::getVehiculo).thenComparing(Control::getName);
+    private final static Comparator<Service> comparator =
+            Comparator.comparing(Service::getVehiculo).thenComparing(Service::getName);
 
     @Override
-    public int compareTo(final Control other) {
+    public int compareTo(final Service other) {
         return comparator.compare(this, other);
     }
 

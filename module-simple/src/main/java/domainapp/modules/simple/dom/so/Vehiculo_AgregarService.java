@@ -8,26 +8,27 @@ import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
-import domainapp.modules.simple.types.Patente;
+import domainapp.modules.simple.types.Nombre_Control;
 import lombok.RequiredArgsConstructor;
 
-@Action(
+@Action(                                                
         semantics = SemanticsOf.IDEMPOTENT,
         commandPublishing = Publishing.ENABLED,
         executionPublishing = Publishing.ENABLED
 )
-@ActionLayout(associateWith = "simple", sequence = "2")
+@ActionLayout(associateWith = "simple")                   
 @RequiredArgsConstructor
-public class Usuario_removeVehiculo {
+public class Vehiculo_AgregarService {                          
 
-    private final Usuario usuario;
+    private final Vehiculo vehiculo;                    
 
-    public Usuario act(@Patente final String patente) {
-    	vehiculoRepository.findByUsuarioAndPatente(usuario, patente)
-                .ifPresent(vehiculo -> repositoryService.remove(vehiculo));
-        return usuario;
+    public Vehiculo act(
+            @Nombre_Control final String name
+            
+            ) {
+        repositoryService.persist(new Service(vehiculo, name ));
+        return vehiculo;
     }
 
-    @Inject VehiculoRepository vehiculoRepository;
     @Inject RepositoryService repositoryService;
 }

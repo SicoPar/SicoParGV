@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 @Collection                                             
 @CollectionLayout(defaultView = "table")
 @RequiredArgsConstructor                                
-public class Vehiculo_controles {                            
+public class Vehiculo_services {                            
     private final Vehiculo vehiculo;                    
 
-    public List<Control> coll() {
+    public List<Service> coll() {
         return controlRepository.findByVehiculo(vehiculo);  
     }
 
-    @Inject ControlRepository controlRepository;                
+    @Inject ServiceRepository controlRepository;                
 }

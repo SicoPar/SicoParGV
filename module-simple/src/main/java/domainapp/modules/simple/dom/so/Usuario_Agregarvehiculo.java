@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 )
 @ActionLayout(associateWith = "simple")                   
 @RequiredArgsConstructor
-public class Usuario_addvehiculo {                          
+public class Usuario_Agregarvehiculo {                          
 
     private final Usuario usuario;                    
 
