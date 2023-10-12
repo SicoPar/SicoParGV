@@ -1,6 +1,7 @@
 package domainapp.modules.simple.dom.so;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.BookmarkPolicy;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PriorityPrecedence;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.PromptStyle;
@@ -22,6 +24,7 @@ import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
+import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
@@ -40,6 +43,9 @@ public class Usuarios {
 	final UsuarioRepository usuarioRepository;
 	final VehiculoRepository vehiculoRepository;
 	final ViajeRepository viajeRepository;
+	final ServiceRepository serviceRepository;
+	Service service;
+	private Vehiculo selectedVehicle;
 
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(promptStyle = PromptStyle.INLINE)
@@ -79,6 +85,43 @@ public class Usuarios {
 	public List<Vehiculo> ListaDeVehiculos() {
 		return vehiculoRepository.findAll();
 	}
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+	public List<Service> ListaDeServices() {
+		return serviceRepository.findAll();
+	}
+	
+//	@Action(semantics = SemanticsOf.SAFE)
+//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
+//	public List<Service> listarServiciosPorVehiculo( Vehiculo vehiculo) {
+//	    return serviceRepository.findByVehiculo(vehiculo);
+//	}
+
+//	@Action(semantics = SemanticsOf.SAFE)
+//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
+//	 public List<Service> listarServiciosPorVehiculo(Vehiculo vehiculo) {
+//	        if(vehiculo == null) return Collections.emptyList();
+//	        return serviceRepository.findByVehiculo(vehiculo);
+//	    }
+	
+//	@Action(semantics = SemanticsOf.SAFE)
+//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
+//	public List<Service> listarServiciosPorVehiculo(Vehiculo vehiculo) {
+//	    if (vehiculo == null) {
+//	        return Collections.emptyList();
+//	    }
+//	    return serviceRepository.findByVehiculo(vehiculo);
+//	}
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Patente de Vehículo")
+	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String patente) {
+	    return serviceRepository.findByVehiculo_Patente(patente);
+	}
+	
+	
+
 
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)

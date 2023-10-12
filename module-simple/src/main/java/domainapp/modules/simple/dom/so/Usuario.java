@@ -16,6 +16,7 @@ import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.applib.services.message.MessageService;
@@ -223,13 +224,13 @@ public class Usuario implements Comparable<Usuario> {
 		return null;
 	}
 
-	@Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-	@ActionLayout(associateWith = "simple", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
-	public void Eliminar() {
-		final String title = titleService.titleOf(this);
-		messageService.informUser(String.format("'%s' deleted", title));
-		repositoryService.removeAndFlush(this);
-	}
+//	@Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+//	@ActionLayout(associateWith = "simple", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
+//	public void Eliminar() {
+//		final String title = titleService.titleOf(this);
+//		messageService.informUser(String.format("'%s' deleted", title));
+//		repositoryService.removeAndFlush(this);
+//	}
 
 	private final static Comparator<Usuario> comparator = Comparator.comparing(Usuario::getApellido);
 
@@ -238,4 +239,22 @@ public class Usuario implements Comparable<Usuario> {
 		return comparator.compare(this, other);
 	}
 
+	
+	@Action(
+		    semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE,
+		    commandPublishing = Publishing.ENABLED,
+		    executionPublishing = Publishing.ENABLED
+		)
+		@ActionLayout(named = "Eliminar Usuario", position = ActionLayout.Position.PANEL)
+		public void eliminarUsuario() {
+		    final String titulo = titleService.titleOf(this);
+		    messageService.informUser(String.format("'%s' ha sido eliminado", titulo));
+		    repositoryService.removeAndFlush(this);
+		}
+	
+	
+	
+	
+	
+	
 }
