@@ -1,7 +1,11 @@
 package domainapp.modules.simple.dom.so;
 
-import java.util.Comparator;
+import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
 
+import java.util.Comparator;
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,18 +17,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
+import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibleRepository;
 import domainapp.modules.simple.types.Modelo;
 import domainapp.modules.simple.types.Patente;
 import lombok.AccessLevel;
@@ -64,11 +76,17 @@ public class Vehiculo implements Comparable<Vehiculo> {
     @Getter @Setter
     private long version;
 
-
-    Vehiculo(Usuario usuario, String patente, String modelo) {
+	@Inject
+	@Transient
+	VehiculosDisponibleRepository vehiculosDisponibleRepository;
+    
+    
+    
+    Vehiculo(Usuario usuario, String patente, String modelo, VehiculosDisponible vehiculosDisponible) {
         this.usuario = usuario;
         this.patente = patente;
         this.modelo = modelo;
+        this.vehiculosDisponible = vehiculosDisponible;
        
     }
 
@@ -78,6 +96,12 @@ public class Vehiculo implements Comparable<Vehiculo> {
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     @Getter @Setter
     private Usuario usuario;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "vehiculosDisponible_id")
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @Getter @Setter
+    private VehiculosDisponible vehiculosDisponible;
 
     @Title
     @Patente
@@ -100,5 +124,24 @@ public class Vehiculo implements Comparable<Vehiculo> {
     public int compareTo(final Vehiculo other) {
         return comparator.compare(this, other);
     }
+    
 
+    @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "vehiculosDisponible", promptStyle = PromptStyle.INLINE)
+    public Vehiculo updateVehiculosDisponible(
+            final VehiculosDisponible vehiculosDisponible) {
+        setVehiculosDisponible(vehiculosDisponible);
+        return this;
+    }
+
+    @Programmatic
+    public List<VehiculosDisponible> choices0UpdateVehiculosDisponible() {
+        return vehiculosDisponibleRepository.findAll();
+    }
+
+    public VehiculosDisponible default0UpdateVehiculosDisponible() {
+        return getVehiculosDisponible();
+    }
+    
+   
 }
