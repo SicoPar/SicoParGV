@@ -23,6 +23,7 @@ import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.types.Nombre_Control;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -60,9 +61,11 @@ public class Service implements Comparable<Service> {
     private long version;
 
 
-    Service(Vehiculo vehiculo, String name) {
+    Service(VehiculosDisponible vehiculo, String name,Usuario usuario) {
         this.vehiculo = vehiculo;
         this.name = name;
+        this.usuario = usuario;
+        
     }
 
 
@@ -70,7 +73,14 @@ public class Service implements Comparable<Service> {
     @JoinColumn(name = "vehiculo_id")
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     @Getter @Setter
-    private Vehiculo vehiculo;
+    private VehiculosDisponible vehiculo;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id")
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @Getter @Setter
+    private Usuario usuario;
+    
 
     @Nombre_Control
     @Column(name = "nombre", length = Nombre_Control.MAX_LEN, nullable = false)

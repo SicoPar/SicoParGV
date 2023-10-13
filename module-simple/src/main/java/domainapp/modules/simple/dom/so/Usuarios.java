@@ -116,8 +116,8 @@ public class Usuarios {
 	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Patente de Vehículo")
-	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String patente) {
-	    return serviceRepository.findByVehiculo_Patente(patente);
+	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String name) {
+	    return serviceRepository.findByVehiculo_Name(name);
 	}
 	
 	
