@@ -25,6 +25,8 @@ import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
 import domainapp.modules.simple.dom.destino.Destino;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibleRepository;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
@@ -44,6 +46,7 @@ public class Usuarios {
 	final VehiculoRepository vehiculoRepository;
 	final ViajeRepository viajeRepository;
 	final ServiceRepository serviceRepository;
+	final VehiculosDisponibleRepository vehiculosDisponible;
 	Service service;
 	private Vehiculo selectedVehicle;
 
@@ -92,6 +95,12 @@ public class Usuarios {
 		return serviceRepository.findAll();
 	}
 	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+	public List<VehiculosDisponible> ListaDeVehiculosDisponibles() {
+		return vehiculosDisponible.findAll();
+	}
+	
 //	@Action(semantics = SemanticsOf.SAFE)
 //	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
 //	public List<Service> listarServiciosPorVehiculo( Vehiculo vehiculo) {
@@ -116,8 +125,8 @@ public class Usuarios {
 	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Patente de Vehículo")
-	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String name) {
-	    return serviceRepository.findByVehiculo_Name(name);
+	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String patente) {
+	    return serviceRepository.findByVehiculo_Patente(patente);
 	}
 	
 	

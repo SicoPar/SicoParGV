@@ -12,6 +12,7 @@ import org.apache.isis.applib.annotation.Nature;
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.destino.Destinos;
+import domainapp.modules.simple.dom.so.Service;
 import domainapp.modules.simple.dom.so.Usuario;
 import domainapp.modules.simple.dom.so.UsuarioRepository;
 import domainapp.modules.simple.dom.so.Usuarios;
@@ -19,6 +20,7 @@ import domainapp.modules.simple.dom.so.Vehiculo;
 import domainapp.modules.simple.dom.so.VehiculoRepository;
 import domainapp.modules.simple.dom.so.Viaje;
 import domainapp.modules.simple.dom.so.ViajeRepository;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 
 import java.util.stream.Collectors;
 
@@ -41,7 +43,15 @@ public class HomePageViewModel {
 	public List<Destino> getDestinos() {
 		return destino.listAll();
 	}
-
+	
+	public List<Service> getServices() {
+		return usuario.ListaDeServices();
+	}
+	
+	public List<VehiculosDisponible> getVehiculosDisponibles() {
+		return usuario.ListaDeVehiculosDisponibles();
+	}
+	
 	public List<ViajePlusUsuario> getViaje() {
         return viajeRepository.findAll()
                 .stream()
@@ -53,6 +63,7 @@ public class HomePageViewModel {
 	Usuarios usuario;
 	@Inject
 	Destinos destino;
+	
 	@Inject
 	ViajeRepository viajeRepository;
 	@Inject

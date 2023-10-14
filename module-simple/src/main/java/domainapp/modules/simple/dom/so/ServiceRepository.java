@@ -12,5 +12,5 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
 
     List<Service> findByVehiculo(VehiculosDisponible vehiculo);
   
-    List<Service> findByVehiculo_Name(String name);
+    List<Service> findByVehiculo_Patente(String patente);
 }

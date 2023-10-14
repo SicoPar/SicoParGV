@@ -66,7 +66,7 @@ public class Usuario_Agregarvehiculo {
             return String.format("El vehículo con la patente ingresada ya está definido por este usuario: %s", patente);
         }
         if (vehiculoRepository.findByUsuarioAndVehiculosDisponible(usuario, vehiculosDisponible).isPresent()) {
-            return String.format("Este usuario ya ha asignado este vehículo disponible: %s", vehiculosDisponible.getName());
+            return String.format("Este usuario ya ha asignado este vehículo disponible: %s", vehiculosDisponible.getPatente());
         }
 
        return null;
