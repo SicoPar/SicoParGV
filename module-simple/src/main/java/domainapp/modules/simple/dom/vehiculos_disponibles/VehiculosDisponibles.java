@@ -18,7 +18,11 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
+import domainapp.modules.simple.enumeradores.Automovil;
+import domainapp.modules.simple.enumeradores.Color;
+import domainapp.modules.simple.enumeradores.TipoCombustible;
 import domainapp.modules.simple.types.Name;
+import domainapp.modules.simple.types.Patente;
 
 @DomainService(
         nature = NatureOfService.VIEW,
@@ -36,33 +40,40 @@ public class VehiculosDisponibles {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public VehiculosDisponible create(
-            @Name final String name) {
-        return repositoryService.persist(VehiculosDisponible.withName(name));
+            @Patente final String patente,
+             final String marca,
+             final String modelo,
+            final Color color,
+            final Automovil automovil,
+            final TipoCombustible combustible,
+            final String motor
+            ) {
+        return repositoryService.persist(VehiculosDisponible.withName(patente,marca,modelo,color,automovil,combustible,motor));
     }
 
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public List<VehiculosDisponible> findByNameLike(
-            @Name final String name) {
+    public List<VehiculosDisponible> findByPatenteLike(
+            @Name final String patente) {
         return repositoryService.allMatches(
                 Query.named(VehiculosDisponible.class, VehiculosDisponible.NAMED_QUERY__FIND_BY_NAME_LIKE)
-                     .withParameter("name", "%" + name + "%"));
+                     .withParameter("name", "%" + patente + "%"));
     }
 
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT, promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public List<VehiculosDisponible> findByName(
-            @Name final String name
+           @Patente final String patente
             ) {
-        return VehiculosDisponibleRepository.findByNameContaining(name);
+        return VehiculosDisponibleRepository.findByPatenteContaining(patente);
     }
 
 
     @Programmatic
-    public VehiculosDisponible findByNameExact(final String name) {
-        return VehiculosDisponibleRepository.findByName(name);
+    public VehiculosDisponible findByNameExact(final String patente) {
+        return VehiculosDisponibleRepository.findByPatente(patente);
     }
 
 
@@ -81,7 +92,7 @@ public class VehiculosDisponibles {
         jpaSupportService.getEntityManager(VehiculosDisponible.class)
             .ifSuccess(entityManager -> {
                 final TypedQuery<VehiculosDisponible> q = entityManager.createQuery(
-                        "SELECT p FROM SimpleObject p ORDER BY p.name",
+                        "SELECT p FROM SimpleObject p ORDER BY p.patente",
                         VehiculosDisponible.class)
                     .setMaxResults(1);
                 q.getResultList();

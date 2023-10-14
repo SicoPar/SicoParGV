@@ -3,6 +3,9 @@ package domainapp.modules.simple.dom.vehiculos_disponibles;
 import java.util.Comparator;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -32,15 +35,20 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import domainapp.modules.simple.dom.so.Vehiculo;
+import domainapp.modules.simple.enumeradores.Automovil;
+import domainapp.modules.simple.enumeradores.Color;
+import domainapp.modules.simple.enumeradores.Sector;
+import domainapp.modules.simple.enumeradores.TipoCombustible;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Notes;
+import domainapp.modules.simple.types.Patente;
 
 
 @javax.persistence.Entity
 @javax.persistence.Table(
     schema="simple",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "VehiculosDisponible__name__UNQ", columnNames = {"NAME"})
+        @javax.persistence.UniqueConstraint(name = "VehiculosDisponible__patente__UNQ", columnNames = {"patente"})
     }
 )
 @javax.persistence.NamedQueries({
@@ -48,7 +56,7 @@ import domainapp.modules.simple.types.Notes;
                 name = VehiculosDisponible.NAMED_QUERY__FIND_BY_NAME_LIKE,
                 query = "SELECT so " +
                         "FROM VehiculosDisponible so " +
-                        "WHERE so.name LIKE :name"
+                        "WHERE so.patente LIKE :patente"
         )
 })
 @javax.persistence.EntityListeners(IsisEntityListener.class)
@@ -59,7 +67,7 @@ import domainapp.modules.simple.types.Notes;
 @ToString(onlyExplicitlyIncluded = true)
 public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
 
-    static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "VehiculosDisponible.findByNameLike";
+    static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "VehiculosDisponible.findBypatenteLike";
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
@@ -72,9 +80,15 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @Getter @Setter
     private long version;
 
-    public static VehiculosDisponible withName(String name) {
+    public static VehiculosDisponible withName(String patente, String marca , String modelo ,Color color,Automovil automovil,TipoCombustible combustible,String motor) {
         val simpleObject = new VehiculosDisponible();
-        simpleObject.setName(name);
+        simpleObject.setPatente(patente);
+        simpleObject.setMarca(marca);
+        simpleObject.setModelo(modelo);
+        simpleObject.setColor(color);
+        simpleObject.setAutomovil(automovil);
+        simpleObject.setCombustible(combustible);
+        simpleObject.setMotor(motor);
         return simpleObject;
     }
 
@@ -89,11 +103,47 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     
     
     @Title
-    @Name
-    @javax.persistence.Column(length = Name.MAX_LEN, nullable = false)
+    @Patente
+    @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
-    private String name;
+    private String patente;
+    
+    @Patente
+    @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
+    @Getter @Setter @ToString.Include
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    private String Marca;
+    
+    @Patente
+    @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
+    @Getter @Setter @ToString.Include
+    @PropertyLayout(fieldSetId = "name", sequence = "3")
+    private String Modelo;
+    
+    @Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "name", sequence = "4")     
+	private Color color;
+    
+    @Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "name", sequence = "5")     
+	private Automovil automovil;
+    
+    @Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "name", sequence = "6")     
+	private TipoCombustible Combustible;
+    
+    @Patente
+    @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
+    @Getter @Setter @ToString.Include
+    @PropertyLayout(fieldSetId = "name", sequence = "7")
+    private String Motor;
 
     @Notes
     @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
@@ -104,14 +154,14 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
 
 
     @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
+    @ActionLayout(associateWith = "patente", promptStyle = PromptStyle.INLINE)
     public VehiculosDisponible updateName(
-            @Name final String name) {
-        setName(name);
+           @Patente final String patente) {
+        setPatente(patente);
         return this;
     }
     public String default0UpdateName() {
-        return getName();
+        return getPatente();
     }
     public String validate0UpdateName(String newName) {
         for (char prohibitedCharacter : "&%$!".toCharArray()) {
@@ -125,7 +175,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(
-            associateWith = "name", position = ActionLayout.Position.PANEL,
+            associateWith = "patente", position = ActionLayout.Position.PANEL,
             describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         final String title = titleService.titleOf(this);
@@ -136,7 +186,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
 
 
     private final static Comparator<VehiculosDisponible> comparator =
-            Comparator.comparing(VehiculosDisponible::getName);
+            Comparator.comparing(VehiculosDisponible::getPatente);
 
     @Override
     public int compareTo(final VehiculosDisponible other) {

@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VehiculosDisponibleRepository extends JpaRepository<VehiculosDisponible, Long> {
 
-    List<VehiculosDisponible> findByNameContaining(final String name);
+    List<VehiculosDisponible> findByPatenteContaining(final String patente);
 
-    VehiculosDisponible findByName(final String name);
+    VehiculosDisponible findByPatente(final String patente);
 
 
 
