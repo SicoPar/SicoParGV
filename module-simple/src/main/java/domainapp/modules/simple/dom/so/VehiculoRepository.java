@@ -1,3 +1,6 @@
+
+
+
 package domainapp.modules.simple.dom.so;
 
 
@@ -15,4 +18,8 @@ public interface VehiculoRepository extends JpaRepository<Vehiculo, Long> {
 
     Optional<Vehiculo> findByUsuarioAndPatente(Usuario usuario, String patente);
     Optional<Vehiculo> findByUsuarioAndVehiculosDisponible(Usuario usuario, VehiculosDisponible vehiculosDisponible);
+    
+    List<Vehiculo> findByVehiculosDisponible(VehiculosDisponible vehiculosDisponible);
+    
+    public List<Vehiculo> findByVehiculosDisponible_Patente(final String patente);
 }

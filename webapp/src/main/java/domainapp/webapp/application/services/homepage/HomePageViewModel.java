@@ -37,9 +37,6 @@ public class HomePageViewModel {
 		return usuario.ListaDeUsuarios();
 	}
 
-	public List<Vehiculo> getVehiculos() {
-		return vehiculoRepository.findAll();
-	}
 	public List<Destino> getDestinos() {
 		return destino.listAll();
 	}

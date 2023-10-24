@@ -8,18 +8,19 @@ import javax.inject.Inject;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.CollectionLayout;
 
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import lombok.RequiredArgsConstructor;
 
 @Collection
 @CollectionLayout(defaultView = "table")
 @RequiredArgsConstructor
 
-public class Vehiculo_viajes {
-    private final Vehiculo vehiculo;
+public class VehiculosDisponible_viajes {
+    private final VehiculosDisponible vehiculosDisponible;
 
     public List<Viaje> coll() {
         if (viajeRepository != null) {
-            return viajeRepository.findByVehiculoOrderByVisitAtDesc(vehiculo);
+            return viajeRepository.findByVehiculosDisponibleOrderByVisitAtDesc(vehiculosDisponible);
         } else {
             throw new IllegalStateException("viajeRepository es nulo");
         }
@@ -28,6 +29,5 @@ public class Vehiculo_viajes {
     @Inject
     ViajeRepository viajeRepository;
 }
-
 
 

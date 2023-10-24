@@ -2,6 +2,7 @@ package domainapp.webapp.application.services.homepage;
 
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,6 +21,7 @@ import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.so.Usuario;
 import domainapp.modules.simple.dom.so.Vehiculo;
 import domainapp.modules.simple.dom.so.Viaje;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,12 +45,13 @@ public class ViajePlusUsuario {
 
     ViajePlusUsuario(Viaje viaje) {this.viaje = viaje;}
 
-    public Vehiculo getVehiculo() {return viaje.getVehiculo();}
+   public VehiculosDisponible getVehiculoDisponible() {return viaje.getVehiculosDisponible();}
+   public Usuario getUsuario() {return viaje.getUsuario();}
     public Destino getDestino() {return viaje.getDestino();}
 
-    public LocalDateTime getViajeAt() {return viaje.getVisitAt();}
+    public LocalDate getViajeAt() {return viaje.getVisitAt();}
 
-    public Usuario getUsuario() {
-        return getVehiculo().getUsuario();
-    }
+//    public Usuario getUsuario() {
+//        return getVehiculo().getUsuario();
+//    }
 }

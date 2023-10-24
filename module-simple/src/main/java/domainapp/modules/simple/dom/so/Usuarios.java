@@ -1,6 +1,8 @@
+
 package domainapp.modules.simple.dom.so;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.BookmarkPolicy;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PriorityPrecedence;
 import org.apache.isis.applib.annotation.Programmatic;
@@ -128,6 +132,37 @@ public class Usuarios {
 	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String patente) {
 	    return serviceRepository.findByVehiculo_Patente(patente);
 	}
+	
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por Patente de Vehículo")
+	public List<Viaje> listarViajesPorPatenteVehiculo(@Patente final String patente) {
+	    return viajeRepository.findByVehiculosDisponible_Patente(patente);
+	}
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Buscar Viajes por Patente de Vehículo y Fecha de Viaje")
+	public List<Viaje> buscarViajesPorPatenteYFecha(String patente, LocalDate fecha) {
+	    return viajeRepository.findByPatenteAndFecha(patente, fecha);
+	}
+	
+	@ActionLayout(named = "Buscar Vehículos por Vehículo Disponible")
+	public List<Vehiculo> buscarVehiculosPorVehiculoDisponible(VehiculosDisponible vehiculoDisponible) {
+	    return vehiculoRepository.findByVehiculosDisponible(vehiculoDisponible);
+	}
+	
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(named = "Buscar Vehiculos por Patente de VehiculosDisponible", bookmarking = BookmarkPolicy.AS_ROOT)
+	public List<Vehiculo> buscarVehiculosPorPatenteDeVehiculosDisponible(@ParameterLayout(named = "Patente de VehiculosDisponible") final String patente) {
+	    return vehiculoRepository.findByVehiculosDisponible_Patente(patente);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 

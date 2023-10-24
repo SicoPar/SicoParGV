@@ -3,6 +3,7 @@ package domainapp.webapp.application.services.homepage;
 
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.BookmarkPolicy;
+import org.apache.isis.applib.annotation.PromptStyle;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.factory.FactoryService;
+import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.wrapper.WrapperFactory;
 
 import domainapp.modules.simple.dom.destino.Destino;
@@ -19,8 +25,13 @@ import domainapp.modules.simple.dom.so.Usuario;
 import domainapp.modules.simple.dom.so.UsuarioRepository;
 import domainapp.modules.simple.dom.so.Vehiculo;
 import domainapp.modules.simple.dom.so.VehiculoRepository;
-import domainapp.modules.simple.dom.so.Vehiculo_libroViajes;
+import domainapp.modules.simple.dom.so.VehiculosDisponible_libroViajes;
 import domainapp.modules.simple.dom.so.Viaje;
+import domainapp.modules.simple.dom.so.ViajeRepository;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibleRepository;
+import domainapp.modules.simple.enumeradores.Licencia;
+import domainapp.modules.simple.types.Patente;
 import lombok.RequiredArgsConstructor;
 
 
@@ -32,9 +43,28 @@ public class HomePageViewModel_libroViajes {
     final HomePageViewModel homePageViewModel;
     
 
-    public Object act(Usuario usuario, Vehiculo vehiculo,Destino destino, LocalDateTime visitAt, boolean showVisit) {
-        Viaje viaje = wrapperFactory.wrapMixin(Vehiculo_libroViajes.class, vehiculo).act(destino,visitAt);
-        return showVisit ? viaje : homePageViewModel;
+    public Object act(Usuario usuario, VehiculosDisponible vehiculosDisponible, Destino destino, LocalDate visitAt, boolean showVisit) {
+        if (usuario != null) {
+            Licencia licencia = usuario.getLicencia();
+           
+            if (Licencia.No_Contiene_Licencia.equals(licencia)) {
+                messageService.raiseError("El usuario seleccionado, no puede realizar este viaje porque no tiene licencia");
+     
+            } else {
+            	
+                List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(), visitAt);
+
+                if (!viajesExistentes.isEmpty()) {
+                   
+                    messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
+                } else {
+               
+                    Viaje viaje = wrapperFactory.wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible).act(usuario, destino, visitAt);
+                    return showVisit ? viaje : homePageViewModel;
+                }
+            }
+        }
+        return homePageViewModel;
     }
     public List<Usuario> autoComplete0Act(final String apellido) {
         return usuarioRepository.findByApellidoContaining(apellido);
@@ -47,21 +77,34 @@ public class HomePageViewModel_libroViajes {
 //        List<Destino> destinos = destinoRepository.findByNameContaining(nombre);
 //        return destinos != null ? destinos : Collections.emptyList();
 //    }
-    public List<Vehiculo> choices1Act(Usuario usuario) {
-        if(usuario == null) return Collections.emptyList();
-        return vehiculoRepository.findByUsuario(usuario);
-    }
+//    public List<Vehiculo> choices1Act(Usuario usuario) {
+//        if(usuario == null) return Collections.emptyList();
+//        return vehiculoRepository.findByUsuario(usuario);
+//    }
+  
+  public List<VehiculosDisponible> autoComplete1Act(final String patente) {
+	  return vehiculosDisponibleRepository.findByPatenteContaining(patente);}
+  
+  
+  
+
+  
+  
     public LocalDateTime default2Act(Usuario usuario, Vehiculo vehiculo) {
         if(vehiculo == null) return null;
-        return factoryService.mixin(Vehiculo_libroViajes.class, vehiculo).default0Act();
+        return factoryService.mixin(VehiculosDisponible_libroViajes.class, vehiculo).default0Act();
     }
-    public String validate2Act(Usuario usuario, Vehiculo vehiculo, LocalDateTime viajeAt){
-         return factoryService.mixin(Vehiculo_libroViajes.class, vehiculo).validate0Act(viajeAt);
+    public String validate2Act(Usuario usuario, Vehiculo vehiculo, LocalDate viajeAt){
+         return factoryService.mixin(VehiculosDisponible_libroViajes.class, vehiculo).validate0Act(viajeAt);
     }
 
     @Inject VehiculoRepository vehiculoRepository;
+    @Inject ViajeRepository viajeRepository;
+    @Inject VehiculosDisponibleRepository vehiculosDisponibleRepository;
     @Inject UsuarioRepository usuarioRepository;
     @Inject DestinoRepository destinoRepository;
     @Inject WrapperFactory wrapperFactory;
     @Inject FactoryService factoryService;
+    @Inject
+    private MessageService messageService;
 }
