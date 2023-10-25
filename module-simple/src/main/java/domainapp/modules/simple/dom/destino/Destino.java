@@ -120,7 +120,7 @@ public class Destino implements Comparable<Destino> {
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(
-            associateWith = "name", position = ActionLayout.Position.PANEL,
+            associateWith = "destino", position = ActionLayout.Position.PANEL,
             describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         final String title = titleService.titleOf(this);

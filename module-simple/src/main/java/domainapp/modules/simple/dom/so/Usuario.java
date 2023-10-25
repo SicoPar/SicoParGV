@@ -3,6 +3,7 @@ package domainapp.modules.simple.dom.so;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.Column;
@@ -224,13 +225,6 @@ public class Usuario implements Comparable<Usuario> {
 		return null;
 	}
 
-//	@Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-//	@ActionLayout(associateWith = "simple", position = ActionLayout.Position.PANEL, describedAs = "Deletes this object from the persistent datastore")
-//	public void Eliminar() {
-//		final String title = titleService.titleOf(this);
-//		messageService.informUser(String.format("'%s' deleted", title));
-//		repositoryService.removeAndFlush(this);
-//	}
 
 	private final static Comparator<Usuario> comparator = Comparator.comparing(Usuario::getApellido);
 
@@ -251,6 +245,30 @@ public class Usuario implements Comparable<Usuario> {
 		    messageService.informUser(String.format("'%s' ha sido eliminado", titulo));
 		    repositoryService.removeAndFlush(this);
 		}
+	
+	
+//	
+//	   @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+//	    @ActionLayout(
+//	            associateWith = "simpleObject", position = ActionLayout.Position.PANEL,
+//	            describedAs = "Deletes this object from the persistent datastore")
+//	    public void delete() {
+//	        final String title = titleService.titleOf(this);
+//	        messageService.informUser(String.format("'%s' deleted", title));
+//	        List<Viaje> viajesRelacionados = viajeRepository.findByVehiculosDisponible_Patente(patente);
+//	        List<Service> servicesRelacionados = serviceRepository.findByVehiculo_Patente(patente);
+//	  
+//	        for (Viaje viaje : viajesRelacionados) {
+//	            // Elimina cada viaje relacionado
+//	           repositoryService.removeAndFlush(viaje);
+//	        }
+//	        
+//	        for (Service service : servicesRelacionados) {
+//	            // Elimina cada viaje relacionado
+//	           repositoryService.removeAndFlush(service);
+//	        }
+//	        repositoryService.removeAndFlush(this);
+//	    }
 	
 	
 	

@@ -26,9 +26,11 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
 import domainapp.modules.simple.types.Nombre;
+import domainapp.modules.simple.types.Nombre_Destino;
 import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
 import domainapp.modules.simple.dom.destino.Destino;
+import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibleRepository;
 import domainapp.modules.simple.enumeradores.Genero;
@@ -51,6 +53,8 @@ public class Usuarios {
 	final ViajeRepository viajeRepository;
 	final ServiceRepository serviceRepository;
 	final VehiculosDisponibleRepository vehiculosDisponible;
+	final DestinoRepository destinoRepository;
+	
 	Service service;
 	private Vehiculo selectedVehicle;
 
@@ -140,6 +144,7 @@ public class Usuarios {
 	    return viajeRepository.findByVehiculosDisponible_Patente(patente);
 	}
 	
+	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Buscar Viajes por Patente de Vehículo y Fecha de Viaje")
 	public List<Viaje> buscarViajesPorPatenteYFecha(String patente, LocalDate fecha) {
@@ -160,6 +165,18 @@ public class Usuarios {
 	
 	
 	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por documento de Usuario")
+	public List<Viaje> findByUsuario_documento(@Documento final String documento) {
+	    return viajeRepository.findByUsuario_documento(documento);
+	}
+	
+	
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por destino")
+	public List<Viaje> findByDestino_nombre(@Nombre_Destino final String name) {
+	    return viajeRepository.findByDestino_name(name);
+	}
 	
 	
 	

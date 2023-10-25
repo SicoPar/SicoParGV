@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -84,8 +85,7 @@ public class Viaje implements Comparable<Viaje> {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "vehiculosDisponible")
 	@PropertyLayout(fieldSetId = "name", sequence = "1")
-	@Getter
-	@Setter
+	@Getter @Setter
 	private VehiculosDisponible vehiculosDisponible;
 
 	@ManyToOne(optional = false)
@@ -94,6 +94,7 @@ public class Viaje implements Comparable<Viaje> {
 	@Getter
 	@Setter
 	private Destino destino;
+	
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "usuario_id")
