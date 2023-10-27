@@ -45,3 +45,4 @@ import domainapp.webapp.quartz.QuartzModule;
 })
 public class AppManifest {
 }
+

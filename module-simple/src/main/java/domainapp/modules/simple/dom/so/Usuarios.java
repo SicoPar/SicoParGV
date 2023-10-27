@@ -29,6 +29,7 @@ import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.Nombre_Destino;
 import domainapp.modules.simple.types.Patente;
 import domainapp.modules.simple.types.Telefono;
+import domainapp.modules.simple.types.prueba;
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
@@ -61,10 +62,10 @@ public class Usuarios {
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(promptStyle = PromptStyle.INLINE)
 	public Usuario CrearUsuario(@Name final String apellido, @Nombre final String nombre, @Documento final String documento,
-			final LocalDate fecha_nacimiento,Sector sectores,@Ciudad String ciudad,Genero genero,Licencia licencia, @Email final String email, @Telefono final String telefono
+			final LocalDate fecha_nacimiento,Sector sectores,@Ciudad String ciudad,Genero genero,Licencia licencia, @Email final String email, @Telefono final String telefono,@prueba final String prueba
 
 	) {
-		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento,sectores,ciudad,genero,licencia,email, telefono));
+		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento,sectores,ciudad,genero,licencia,email, telefono,prueba));
 	}
 
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
@@ -87,8 +88,8 @@ public class Usuarios {
 
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<Usuario> ListaDeUsuarios() {
-		return usuarioRepository.findAll();
+	public List<Usuario> ListaDeUsuariosActivos() {
+		 return usuarioRepository.findByActivo(true);
 	}
 
 	@Action(semantics = SemanticsOf.SAFE)

@@ -34,7 +34,7 @@ public class HomePageViewModel {
 	}
 
 	public List<Usuario> getUsuarios() {
-		return usuario.ListaDeUsuarios();
+		return usuario.ListaDeUsuariosActivos();
 	}
 
 	public List<Destino> getDestinos() {

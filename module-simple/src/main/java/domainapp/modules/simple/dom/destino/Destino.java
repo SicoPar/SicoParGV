@@ -1,6 +1,7 @@
 package domainapp.modules.simple.dom.destino;
 
 import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -29,7 +30,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-
+import domainapp.modules.simple.dom.so.Viaje;
+import domainapp.modules.simple.dom.so.ViajeRepository;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Nombre_Destino;
 import domainapp.modules.simple.types.Notes;
@@ -80,6 +82,7 @@ public class Destino implements Comparable<Destino> {
     @Inject @javax.persistence.Transient RepositoryService repositoryService;
     @Inject @javax.persistence.Transient TitleService titleService;
     @Inject @javax.persistence.Transient MessageService messageService;
+    @Inject @javax.persistence.Transient ViajeRepository viajeRepository;
 
 
 
@@ -122,11 +125,18 @@ public class Destino implements Comparable<Destino> {
     @ActionLayout(
             associateWith = "destino", position = ActionLayout.Position.PANEL,
             describedAs = "Deletes this object from the persistent datastore")
-    public void delete() {
-        final String title = titleService.titleOf(this);
-        messageService.informUser(String.format("'%s' deleted", title));
-        repositoryService.removeAndFlush(this);
-    }
+	 public void delete() {
+	        final String title = titleService.titleOf(this);
+	        messageService.informUser(String.format("'%s' deleted", title));
+	        List<Viaje> viajesRelacionados = viajeRepository.findByDestino_name(name);
+
+	  
+	        for (Viaje viaje : viajesRelacionados) {
+	            // Elimina cada viaje relacionado
+	           repositoryService.removeAndFlush(viaje);
+	        }
+	        repositoryService.removeAndFlush(this);
+	    }
 
 
 

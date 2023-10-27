@@ -36,6 +36,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import domainapp.modules.simple.types.Nombre;
+import domainapp.modules.simple.types.prueba;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
@@ -87,10 +88,10 @@ public class Usuario implements Comparable<Usuario> {
 	private long version;
 
 	public static Usuario withName(String apellido) {
-		return withName(apellido, null,null,null,null,null,null,null,null,null);
+		return withName(apellido, null,null,null,null,null,null,null,null,null,null);
 	}
 
-	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono) {
+	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono,String prueba) {
 		val Usuario = new Usuario();
 		Usuario.setApellido(apellido);
 		Usuario.setNombre(nombre);
@@ -102,6 +103,8 @@ public class Usuario implements Comparable<Usuario> {
 		Usuario.setLicencia(licencia);
 		Usuario.setEmail(email);
 		Usuario.setTelefono(telefono);
+		Usuario.setPrueba(prueba);
+		Usuario.setActivo(true);
 		return Usuario;
 	}
 
@@ -114,6 +117,9 @@ public class Usuario implements Comparable<Usuario> {
 	@Inject
 	@javax.persistence.Transient
 	MessageService messageService;
+	
+    @Inject @javax.persistence.Transient ViajeRepository viajeRepository;
+    
 
 	@Title
 
@@ -191,6 +197,20 @@ public class Usuario implements Comparable<Usuario> {
 	@Getter
 	@Setter
 	private String telefono;
+	
+	@prueba
+	@Column(length = Documento.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.6")
+	@Getter
+	@Setter
+	private String prueba;
+	
+	
+	@Column(length = Documento.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
+	@Getter
+	@Setter
+	private boolean activo;
 
 	@Notes
 	@javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
@@ -233,46 +253,22 @@ public class Usuario implements Comparable<Usuario> {
 		return comparator.compare(this, other);
 	}
 
-	
-	@Action(
-		    semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE,
-		    commandPublishing = Publishing.ENABLED,
-		    executionPublishing = Publishing.ENABLED
-		)
-		@ActionLayout(named = "Eliminar Usuario", position = ActionLayout.Position.PANEL)
-		public void eliminarUsuario() {
-		    final String titulo = titleService.titleOf(this);
-		    messageService.informUser(String.format("'%s' ha sido eliminado", titulo));
-		    repositoryService.removeAndFlush(this);
-		}
-	
-	
-//	
-//	   @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-//	    @ActionLayout(
-//	            associateWith = "simpleObject", position = ActionLayout.Position.PANEL,
-//	            describedAs = "Deletes this object from the persistent datastore")
-//	    public void delete() {
-//	        final String title = titleService.titleOf(this);
-//	        messageService.informUser(String.format("'%s' deleted", title));
-//	        List<Viaje> viajesRelacionados = viajeRepository.findByVehiculosDisponible_Patente(patente);
-//	        List<Service> servicesRelacionados = serviceRepository.findByVehiculo_Patente(patente);
-//	  
-//	        for (Viaje viaje : viajesRelacionados) {
-//	            // Elimina cada viaje relacionado
-//	           repositoryService.removeAndFlush(viaje);
-//	        }
-//	        
-//	        for (Service service : servicesRelacionados) {
-//	            // Elimina cada viaje relacionado
-//	           repositoryService.removeAndFlush(service);
-//	        }
-//	        repositoryService.removeAndFlush(this);
-//	    }
-	
-	
-	
-	
-	
-	
+    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(
+            associateWith = "Usuario", position = ActionLayout.Position.PANEL,
+            describedAs = "Deletes this object from the persistent datastore")
+	 public void delete() {
+	        final String title = titleService.titleOf(this);
+	        messageService.informUser(String.format("'%s' deleted", title));
+	        List<Viaje> viajesRelacionados = viajeRepository.findByUsuario_documento(documento);
+
+	  
+	        for (Viaje viaje : viajesRelacionados) {
+	            // Elimina cada viaje relacionado
+	           viaje.setActivo(false);
+	        }
+	        this.setActivo(false);;
+	    }
+
+
 }
