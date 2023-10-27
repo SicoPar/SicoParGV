@@ -253,22 +253,22 @@ public class Usuario implements Comparable<Usuario> {
 		return comparator.compare(this, other);
 	}
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(
-            associateWith = "Usuario", position = ActionLayout.Position.PANEL,
-            describedAs = "Deletes this object from the persistent datastore")
-	 public void delete() {
-	        final String title = titleService.titleOf(this);
-	        messageService.informUser(String.format("'%s' deleted", title));
-	        List<Viaje> viajesRelacionados = viajeRepository.findByUsuario_documento(documento);
-
-	  
-	        for (Viaje viaje : viajesRelacionados) {
-	            // Elimina cada viaje relacionado
-	           viaje.setActivo(false);
-	        }
-	        this.setActivo(false);;
-	    }
+//    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+//    @ActionLayout(
+//            associateWith = "Usuario", position = ActionLayout.Position.PANEL,
+//            describedAs = "Desactivaras este Usuario y todo lo que esta contenga")
+//	 public void delete() {
+//	        final String title = titleService.titleOf(this);
+//	        messageService.informUser(String.format("'%s' deleted", title));
+//	        List<Viaje> viajesRelacionados = viajeRepository.findByUsuario_documento(documento);
+//
+//	  
+//	        for (Viaje viaje : viajesRelacionados) {
+//	            // Desactivar cada viaje relacionado
+//	           viaje.setActivo(false);
+//	        }
+//	        this.setActivo(false);;
+//	    }
 
 
 }

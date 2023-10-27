@@ -167,9 +167,9 @@ public class Usuarios {
 	
 	
 	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por documento de Usuario")
-	public List<Viaje> findByUsuario_documento(@Documento final String documento) {
-	    return viajeRepository.findByUsuario_documento(documento);
+	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por  Usuario")
+	public List<Viaje> findByUsuario_documento(Usuario usuario) {
+	    return viajeRepository.findByUsuario(usuario);
 	}
 	
 	
