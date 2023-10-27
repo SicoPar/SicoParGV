@@ -48,6 +48,7 @@ public class ViajePlusUsuario {
    public VehiculosDisponible getVehiculoDisponible() {return viaje.getVehiculosDisponible();}
    public Usuario getUsuario() {return viaje.getUsuario();}
     public Destino getDestino() {return viaje.getDestino();}
+    public String getRazon() {return viaje.getRazon();}
 
     public LocalDate getViajeAt() {return viaje.getVisitAt();}
 

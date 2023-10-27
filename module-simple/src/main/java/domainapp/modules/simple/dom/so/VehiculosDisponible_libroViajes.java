@@ -17,7 +17,10 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.enumeradores.Estado;
+import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.types.Razon;
+import domainapp.modules.simple.types.prueba;
 import lombok.RequiredArgsConstructor;
 
 @Action(semantics = SemanticsOf.IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
@@ -25,17 +28,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VehiculosDisponible_libroViajes {
 	public final Usuario usuario;
+	public final Usuario pasajero;
 	public final VehiculosDisponible vehiculosDisponible;
 	public final Destino destino;
 
 	public VehiculosDisponible_libroViajes(VehiculosDisponible vehiculosDisponible) {
 		this.usuario = null;
+		this.pasajero = null;
 		this.vehiculosDisponible = vehiculosDisponible;
 		this.destino = null; // Opcional: Puedes inicializar destino aquí si es necesario
 	}
 
-	public Viaje act(Usuario usuario, Destino destino, LocalDate visitAt) {
-		return repositoryService.persist(new Viaje(usuario, vehiculosDisponible, destino, visitAt));
+	public Viaje act(Usuario usuario,@prueba Usuario pasajero, Destino destino,String razon, LocalDate visitAt,Riesgo riesgo,Estado estado) {
+		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,visitAt,riesgo,estado));
 	}
 
 	public String validate0Act(LocalDate visitAt) {

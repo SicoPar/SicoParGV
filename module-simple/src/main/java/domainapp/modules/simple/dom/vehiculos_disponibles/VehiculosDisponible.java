@@ -45,6 +45,7 @@ import domainapp.modules.simple.enumeradores.Automovil;
 import domainapp.modules.simple.enumeradores.Color;
 import domainapp.modules.simple.enumeradores.Sector;
 import domainapp.modules.simple.enumeradores.TipoCombustible;
+import domainapp.modules.simple.types.Modelo;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Notes;
 import domainapp.modules.simple.types.Patente;
@@ -123,11 +124,11 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private String Marca;
     
-    @Patente
-    @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
-    @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "3")
-    private String Modelo;
+    @Modelo
+    @Column(length = Modelo.MAX_LEN, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "1.5")
+    @Getter @Setter
+    private String modelo;
     
     @Enumerated(EnumType.STRING)                                
 	@Column(nullable = false)

@@ -13,17 +13,25 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
-@Property(
-        editing = Editing.ENABLED,
-        maxLength = Modelo.MAX_LEN,
-        optionality = Optionality.OPTIONAL
-)
-@PropertyLayout(named = "modelito")   
-@Parameter(maxLength = Modelo.MAX_LEN, optionality = Optionality.OPTIONAL)
-@ParameterLayout(named = "modelito")  
+@Property(editing = Editing.ENABLED, maxLength = prueba.MAX_LEN, optionality = Optionality.OPTIONAL, mustSatisfy = prueba.Spec.class)
+
+@Parameter(maxLength = prueba.MAX_LEN, optionality = Optionality.OPTIONAL,mustSatisfy = prueba.Spec.class)
+
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Modelo {
+public @interface prueba {
 
-    int MAX_LEN = 100;
+	int MAX_LEN = 50;
+
+	class Spec extends AbstractSpecification<String> {
+		@Override
+		public String satisfiesSafely(String candidate) {
+			for (char prohibitedCharacter : "&%$!".toCharArray()) {
+				if (candidate.contains("" + prohibitedCharacter)) {
+					return "Caracter '" + prohibitedCharacter + "' no esta permitido.";
+				}
+			}
+			return null;
+		}
+	}
 }

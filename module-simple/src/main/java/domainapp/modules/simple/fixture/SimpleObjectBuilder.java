@@ -38,13 +38,15 @@ public class SimpleObjectBuilder extends BuilderScriptWithResult<Usuario> {
     private String email;
     @Getter @Setter
     private String telefono;
+    @Getter @Setter
+    private String prueba;
 
     @Override
     protected Usuario buildResult(final ExecutionContext ec) {
 
         checkParam("name", ec, String.class);
 
-        return wrap(usuarios).CrearUsuario(apellido,nombre,documento,fecha_nacimiento,sector,ciudad,genero,licencia,email,telefono);
+        return wrap(usuarios).CrearUsuario(apellido,nombre,documento,fecha_nacimiento,sector,ciudad,genero,licencia,email,telefono,prueba);
     }
 
     // -- DEPENDENCIES
