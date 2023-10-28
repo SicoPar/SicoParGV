@@ -41,8 +41,8 @@ public class VehiculosDisponible_libroViajes {
 		this.destino = null; // Opcional: Puedes inicializar destino aquí si es necesario
 	}
 
-	public Viaje act(Usuario usuario,@Pasajero Usuario pasajero, Destino destino,String razon, LocalDate visitAt,Riesgo riesgo) {
-		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,visitAt,riesgo));
+	public Viaje act(Usuario usuario,@Pasajero Usuario pasajero, Destino destino,String razon, LocalDate fecha,Riesgo riesgo) {
+		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,fecha,riesgo));
 	}
 
 	public String validate0Act(LocalDate visitAt) {

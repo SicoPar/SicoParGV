@@ -1,11 +1,14 @@
 package domainapp.modules.simple.dom.service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +28,8 @@ import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.enumeradores.Riesgo;
+import domainapp.modules.simple.enumeradores.TipoService;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Nombre_Control;
 import lombok.AccessLevel;
@@ -63,10 +68,13 @@ public class Service implements Comparable<Service> {
     private long version;
 
 
-    public Service(VehiculosDisponible vehiculo, String name,Usuario usuario) {
+    public Service(VehiculosDisponible vehiculo,Usuario usuario,TipoService tipo,LocalDate fecha,String kilometros,Riesgo riesgo) {
         this.vehiculo = vehiculo;
-        this.name = name;
         this.usuario = usuario;
+        this.fecha = fecha;
+        this.tipo = tipo;
+        this.kilometros = kilometros;
+        this.riesgo = riesgo;
         this.activo = true;
         
     }
@@ -84,12 +92,27 @@ public class Service implements Comparable<Service> {
     @Getter @Setter
     private Usuario usuario;
     
-
-    @Nombre_Control
-    @Column(name = "nombre", length = Nombre_Control.MAX_LEN, nullable = false)
+	@Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "details", sequence = "2")     
+	private TipoService tipo;
+    
+    @Enumerated(EnumType.STRING)                                
+	@Column(nullable = false)
+	@Getter @Setter
+	@PropertyLayout(fieldSetId = "details", sequence = "2")     
+	private Riesgo riesgo;
+    
+    @Column(name = "fecha", length = Nombre_Control.MAX_LEN, nullable = false)
     @Getter @Setter
     @PropertyLayout(fieldSetId = "name", sequence = "2")
-    private String name;
+    private LocalDate fecha;
+  
+    @Column(name = "kilometros", length = Nombre_Control.MAX_LEN, nullable = false)
+    @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    private String kilometros;
     
     @Column(length = Documento.MAX_LEN, nullable = true)
 	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
@@ -99,7 +122,7 @@ public class Service implements Comparable<Service> {
 
 
     private final static Comparator<Service> comparator =
-            Comparator.comparing(Service::getVehiculo).thenComparing(Service::getName);
+            Comparator.comparing(Service::getVehiculo).thenComparing(Service::getKilometros);
 
     @Override
     public int compareTo(final Service other) {

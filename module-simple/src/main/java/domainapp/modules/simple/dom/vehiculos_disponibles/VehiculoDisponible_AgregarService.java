@@ -1,5 +1,6 @@
 package domainapp.modules.simple.dom.vehiculos_disponibles;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,6 +13,8 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 import domainapp.modules.simple.dom.service.Service;
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.usuario.UsuarioRepository;
+import domainapp.modules.simple.enumeradores.Riesgo;
+import domainapp.modules.simple.enumeradores.TipoService;
 import lombok.RequiredArgsConstructor;
 
 @Action(
@@ -31,8 +34,8 @@ public class VehiculoDisponible_AgregarService {
         this.usuario = usuario;
     }
 
-    public Service act(String name, Usuario usuario) {
-        return repositoryService.persist(new Service(vehiculo, name, usuario));
+    public Service act(Usuario usuario,TipoService tipo,LocalDate fecha, String kilometros,Riesgo riesgo) {
+        return repositoryService.persist(new Service(vehiculo, usuario,tipo,fecha,kilometros,riesgo));
     }
 
     @Inject

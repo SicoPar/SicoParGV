@@ -40,7 +40,7 @@ public class HomePageViewModel_libroViajes {
 	final HomePageViewModel homePageViewModel;
 
 	public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible,
-			Destino destino, String razon, LocalDate fecha, boolean showVisit, Riesgo riesgo) {
+			Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
 		if (usuario != null) {
 			Licencia licencia = usuario.getLicencia();
 
@@ -67,14 +67,14 @@ public class HomePageViewModel_libroViajes {
 					        Viaje viaje = wrapperFactory
 					            .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
 					            .act(usuario, pasajero, destino, razon, fecha, riesgo);
-					        return showVisit ? viaje : homePageViewModel;
+					        return  viaje ;
 					    }
 					} else {
 					    // Realizar la lógica cuando el riesgo no es alto o cuando "pasajero" es nulo.
 					    Viaje viaje = wrapperFactory
 					        .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
 					        .act(usuario, pasajero, destino, razon, fecha, riesgo);
-					    return showVisit ? viaje : homePageViewModel;
+					    return  viaje ;
 					}
 				}
 			}
