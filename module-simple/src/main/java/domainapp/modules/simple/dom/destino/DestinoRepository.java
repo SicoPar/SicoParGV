@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DestinoRepository extends JpaRepository<Destino, Long> {
 
-    List<Destino> findByNameContaining(final String name);
+    List<Destino> findByNombreContaining(final String nombre);
 
-    Destino findByName(final String name);
+    Destino findByNombre(final String nombre);
 
 }

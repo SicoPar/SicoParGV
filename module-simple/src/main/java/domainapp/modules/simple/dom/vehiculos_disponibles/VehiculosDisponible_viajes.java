@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.vehiculos_disponibles;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +8,8 @@ import javax.inject.Inject;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.CollectionLayout;
 
-import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import lombok.RequiredArgsConstructor;
 
 @Collection

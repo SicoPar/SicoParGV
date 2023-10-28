@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.usuario;
 
 
 
@@ -13,36 +13,46 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.events.domain.ActionDomainEvent;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import lombok.RequiredArgsConstructor;
 
 @Action(
-        domainEvent = Pasajero_delete.ActionEvent.class,
+        domainEvent = Usuario_delete.ActionEvent.class,
         semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE,
         commandPublishing = Publishing.ENABLED,
         executionPublishing = Publishing.ENABLED
 )
 @ActionLayout(
         associateWith = "Usuario", position = ActionLayout.Position.PANEL,
-        describedAs = "Eliminaras este Vidrio de la base de datos, y las ordenes de trabajo que sean de este Vidrio.")
+        describedAs = "Eliminaras este Usuario o Copiloto esta relacionado")
 @RequiredArgsConstructor
-public class Pasajero_delete {
-	 public static class ActionEvent extends ActionDomainEvent<Pasajero_delete>{}
+public class Usuario_delete {
+	 public static class ActionEvent extends ActionDomainEvent<Usuario_delete>{}
 
-	    private final Usuario pasajero;
+	    private final Usuario usuario;
 
 	    public void act() {
 
-            // Buscar órdenes de trabajo dentro del vidrio
-	    	List<Viaje> viajesRelacionados = viajeRepository.findByPasajero(pasajero);
+            
+	    	List<Viaje> viajesRelacionados = viajeRepository.findByUsuario(usuario);
 	    	for (Viaje viaje : viajesRelacionados) {
-                // Marcar la orden de trabajo como inactiva
+             
                 viaje.setActivo(false);
                 repositoryService.persist(viaje);
             }
+	    	
+	
+	        List<Viaje> viajesPasajero = viajeRepository.findByPasajero(usuario);
+	        for (Viaje viaje : viajesPasajero) {
+	
+	            viaje.setActivo(false);
+	            repositoryService.persist(viaje);
+	        }
 
-	    	 // Cambia el estado "activo" del vidrio a false en lugar de eliminarlo
-	    	pasajero.setActivo(false);
-	        repositoryService.persist(pasajero);
+
+	    	usuario.setActivo(false);
+	        repositoryService.persist(usuario);
 	    }
 
 	    @Inject ViajeRepository viajeRepository;

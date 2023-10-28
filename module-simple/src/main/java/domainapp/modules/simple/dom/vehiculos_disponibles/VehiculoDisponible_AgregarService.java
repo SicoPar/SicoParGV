@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.vehiculos_disponibles;
 
 import java.util.List;
 
@@ -8,7 +8,10 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.repository.RepositoryService;
-import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+
+import domainapp.modules.simple.dom.service.Service;
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.usuario.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 @Action(

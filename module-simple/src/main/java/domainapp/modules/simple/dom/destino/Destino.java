@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.isis.applib.annotation.Action;
@@ -30,8 +31,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import domainapp.modules.simple.dom.so.Viaje;
-import domainapp.modules.simple.dom.so.ViajeRepository;
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
+import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Nombre_Destino;
 import domainapp.modules.simple.types.Notes;
@@ -41,7 +43,7 @@ import domainapp.modules.simple.types.Notes;
 @javax.persistence.Table(
     schema="simple",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "Destino___UNQ", columnNames = {"NAME"})
+        @javax.persistence.UniqueConstraint(name = "Destino___UNQ", columnNames = {"nombre"})
     }
 )
 @javax.persistence.NamedQueries({
@@ -49,7 +51,7 @@ import domainapp.modules.simple.types.Notes;
                 name = Destino.NAMED_QUERY__FIND_BY_NAME_LIKE,
                 query = "SELECT so " +
                         "FROM Destino so " +
-                        "WHERE so.name LIKE :name"
+                        "WHERE so.nombre LIKE :nombre"
         )
 })
 @javax.persistence.EntityListeners(IsisEntityListener.class)
@@ -60,7 +62,7 @@ import domainapp.modules.simple.types.Notes;
 @ToString(onlyExplicitlyIncluded = true)
 public class Destino implements Comparable<Destino> {
 
-    static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Destino.findByNameLike";
+    static final String NAMED_QUERY__FIND_BY_NAME_LIKE = "Destino.findByNombreLike";
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
@@ -73,9 +75,10 @@ public class Destino implements Comparable<Destino> {
     @Getter @Setter
     private long version;
 
-    public static Destino withName(String name) {
+    public static Destino withName(String nombre) {
         val destino = new Destino();
-        destino.setName(name);
+        destino.setNombre(nombre);
+        destino.setActivo(true);
         return destino;
     }
 
@@ -91,7 +94,7 @@ public class Destino implements Comparable<Destino> {
     @javax.persistence.Column(length = Nombre_Destino.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
-    private String name;
+    private String nombre;
 
     @Notes
     @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
@@ -99,17 +102,23 @@ public class Destino implements Comparable<Destino> {
     @Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private String notes;
+    
+    @Column(length = Documento.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
+	@Getter
+	@Setter
+	private boolean activo;
 
 
     @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
     public Destino updateName(
-    		  @Nombre_Destino final String name) {
-        setName(name);
+    		  @Nombre_Destino final String nombre) {
+        setNombre(nombre);
         return this;
     }
     public String default0UpdateName() {
-        return getName();
+        return getNombre();
     }
     public String validate0UpdateName(String newName) {
         for (char prohibitedCharacter : "&%$!".toCharArray()) {
@@ -121,27 +130,10 @@ public class Destino implements Comparable<Destino> {
     }
 
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(
-            associateWith = "destino", position = ActionLayout.Position.PANEL,
-            describedAs = "Deletes this object from the persistent datastore")
-	 public void delete() {
-	        final String title = titleService.titleOf(this);
-	        messageService.informUser(String.format("'%s' deleted", title));
-	        List<Viaje> viajesRelacionados = viajeRepository.findByDestino_name(name);
-
-	  
-	        for (Viaje viaje : viajesRelacionados) {
-	            // Elimina cada viaje relacionado
-	           repositoryService.removeAndFlush(viaje);
-	        }
-	        repositoryService.removeAndFlush(this);
-	    }
-
 
 
     private final static Comparator<Destino> comparator =
-            Comparator.comparing(Destino::getName);
+            Comparator.comparing(Destino::getNombre);
 
     @Override
     public int compareTo(final Destino other) {

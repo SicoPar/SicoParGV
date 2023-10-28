@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.viaje;
 
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
 
@@ -50,6 +50,7 @@ import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
+import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Riesgo;

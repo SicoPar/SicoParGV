@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.usuario;
 
 
 
@@ -11,6 +11,8 @@ import org.apache.isis.applib.services.title.TitleService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Estado;
 
 

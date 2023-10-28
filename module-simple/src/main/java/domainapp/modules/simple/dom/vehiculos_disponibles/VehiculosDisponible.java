@@ -36,15 +36,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import domainapp.modules.simple.dom.so.Service;
-import domainapp.modules.simple.dom.so.ServiceRepository;
-import domainapp.modules.simple.dom.so.Vehiculo;
-import domainapp.modules.simple.dom.so.Viaje;
-import domainapp.modules.simple.dom.so.ViajeRepository;
+import domainapp.modules.simple.dom.service.Service;
+import domainapp.modules.simple.dom.service.ServiceRepository;
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Automovil;
 import domainapp.modules.simple.enumeradores.Color;
 import domainapp.modules.simple.enumeradores.Sector;
 import domainapp.modules.simple.enumeradores.TipoCombustible;
+import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Modelo;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Notes;
@@ -96,6 +96,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
         simpleObject.setAutomovil(automovil);
         simpleObject.setCombustible(combustible);
         simpleObject.setMotor(motor);
+        simpleObject.setActivo(true);
         return simpleObject;
     }
 
@@ -153,6 +154,12 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "7")
     private String Motor;
+    
+    @Column(length = Documento.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
+	@Getter
+	@Setter
+	private boolean activo;
 
     @Notes
     @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
@@ -182,28 +189,6 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     }
 
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(
-            associateWith = "simpleObject", position = ActionLayout.Position.PANEL,
-            describedAs = "Deletes this object from the persistent datastore")
-    public void delete() {
-        final String title = titleService.titleOf(this);
-        messageService.informUser(String.format("'%s' deleted", title));
-        List<Viaje> viajesRelacionados = viajeRepository.findByVehiculosDisponible_Patente(patente);
-        List<Service> servicesRelacionados = serviceRepository.findByVehiculo_Patente(patente);
-  
-        for (Viaje viaje : viajesRelacionados) {
-            // Elimina cada viaje relacionado
-           repositoryService.removeAndFlush(viaje);
-        }
-        
-        for (Service service : servicesRelacionados) {
-            // Elimina cada viaje relacionado
-           repositoryService.removeAndFlush(service);
-        }
-        repositoryService.removeAndFlush(this);
-    }
-    
 
 
   

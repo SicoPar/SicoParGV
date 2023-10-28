@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureScript;
 import org.apache.isis.testing.fixtures.applib.modules.ModuleWithFixtures;
 
-import domainapp.modules.simple.dom.so.Usuario;
-import domainapp.modules.simple.dom.so.Viaje;
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.viaje.Viaje;
 
 @Configuration
 @ComponentScan

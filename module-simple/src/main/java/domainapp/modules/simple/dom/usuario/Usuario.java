@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.usuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +37,7 @@ import lombok.ToString;
 import lombok.val;
 import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.prueba;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
@@ -122,7 +123,6 @@ public class Usuario implements Comparable<Usuario> {
     
 
 	@Title
-
 	public String Titulito() {
 		return getApellido() + (", " + getNombre() + "");
 	}
@@ -253,22 +253,7 @@ public class Usuario implements Comparable<Usuario> {
 		return comparator.compare(this, other);
 	}
 
-//    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-//    @ActionLayout(
-//            associateWith = "Usuario", position = ActionLayout.Position.PANEL,
-//            describedAs = "Desactivaras este Usuario y todo lo que esta contenga")
-//	 public void delete() {
-//	        final String title = titleService.titleOf(this);
-//	        messageService.informUser(String.format("'%s' deleted", title));
-//	        List<Viaje> viajesRelacionados = viajeRepository.findByUsuario_documento(documento);
-//
-//	  
-//	        for (Viaje viaje : viajesRelacionados) {
-//	            // Desactivar cada viaje relacionado
-//	           viaje.setActivo(false);
-//	        }
-//	        this.setActivo(false);;
-//	    }
+
 
 
 }

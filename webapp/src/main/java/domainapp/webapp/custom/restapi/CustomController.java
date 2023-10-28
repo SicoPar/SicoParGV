@@ -10,15 +10,15 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.usuario.Usuarios;
+
 import org.apache.isis.applib.services.iactnlayer.InteractionContext;
 import org.apache.isis.applib.services.iactnlayer.InteractionService;
 import org.apache.isis.applib.services.user.UserMemento;
 import org.apache.isis.applib.services.xactn.TransactionalProcessor;
 
 import lombok.RequiredArgsConstructor;
-
-import domainapp.modules.simple.dom.so.Usuario;
-import domainapp.modules.simple.dom.so.Usuarios;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

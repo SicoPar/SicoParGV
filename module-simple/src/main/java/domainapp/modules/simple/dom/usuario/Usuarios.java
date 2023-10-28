@@ -1,5 +1,5 @@
 
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.usuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,8 +32,12 @@ import domainapp.modules.simple.types.Telefono;
 import domainapp.modules.simple.types.prueba;
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
+import domainapp.modules.simple.dom.service.Service;
+import domainapp.modules.simple.dom.service.ServiceRepository;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibleRepository;
+import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
@@ -50,14 +54,14 @@ public class Usuarios {
 	final RepositoryService repositoryService;
 	final JpaSupportService jpaSupportService;
 	final UsuarioRepository usuarioRepository;
-	final VehiculoRepository vehiculoRepository;
+
 	final ViajeRepository viajeRepository;
 	final ServiceRepository serviceRepository;
 	final VehiculosDisponibleRepository vehiculosDisponible;
 	final DestinoRepository destinoRepository;
 	
 	Service service;
-	private Vehiculo selectedVehicle;
+
 
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(promptStyle = PromptStyle.INLINE)
@@ -68,12 +72,7 @@ public class Usuarios {
 		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento,sectores,ciudad,genero,licencia,email, telefono,prueba));
 	}
 
-	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-	public List<Vehiculo> findByPatente(@Patente final String patente) {
-		return repositoryService.allMatches(Query.named(Vehiculo.class, Vehiculo.NAMED_QUERY__FIND_BY_PATENTE)
-				.withParameter("patente", "%" + patente + "%"));
-	}
+	
 
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT, promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -92,11 +91,6 @@ public class Usuarios {
 		 return usuarioRepository.findByActivo(true);
 	}
 
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<Vehiculo> ListaDeVehiculos() {
-		return vehiculoRepository.findAll();
-	}
 	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
@@ -152,17 +146,9 @@ public class Usuarios {
 	    return viajeRepository.findByPatenteAndFecha(patente, fecha);
 	}
 	
-	@ActionLayout(named = "Buscar Vehículos por Vehículo Disponible")
-	public List<Vehiculo> buscarVehiculosPorVehiculoDisponible(VehiculosDisponible vehiculoDisponible) {
-	    return vehiculoRepository.findByVehiculosDisponible(vehiculoDisponible);
-	}
 	
 	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(named = "Buscar Vehiculos por Patente de VehiculosDisponible", bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<Vehiculo> buscarVehiculosPorPatenteDeVehiculosDisponible(@ParameterLayout(named = "Patente de VehiculosDisponible") final String patente) {
-	    return vehiculoRepository.findByVehiculosDisponible_Patente(patente);
-	}
+
 	
 	
 	
@@ -175,8 +161,8 @@ public class Usuarios {
 	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por destino")
-	public List<Viaje> findByDestino_nombre(@Nombre_Destino final String name) {
-	    return viajeRepository.findByDestino_name(name);
+	public List<Viaje> findByDestino_nombre(@Nombre_Destino final String destino) {
+	    return viajeRepository.findByDestino_nombre(destino);
 	}
 	
 	

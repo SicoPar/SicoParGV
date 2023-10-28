@@ -12,6 +12,9 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.usuario.Usuarios;
+
 import org.apache.isis.applib.services.iactnlayer.InteractionContext;
 import org.apache.isis.applib.services.iactnlayer.InteractionService;
 import org.apache.isis.applib.services.user.UserMemento;
@@ -19,9 +22,6 @@ import org.apache.isis.applib.services.xactn.TransactionalProcessor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
-import domainapp.modules.simple.dom.so.Usuario;
-import domainapp.modules.simple.dom.so.Usuarios;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

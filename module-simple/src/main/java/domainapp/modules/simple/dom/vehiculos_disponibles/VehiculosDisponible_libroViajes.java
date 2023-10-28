@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.vehiculos_disponibles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +16,9 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
-import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.usuario.UsuarioRepository;
+import domainapp.modules.simple.dom.viaje.Viaje;
 import domainapp.modules.simple.enumeradores.Estado;
 import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.types.Razon;
@@ -51,8 +53,8 @@ public class VehiculosDisponible_libroViajes {
 		return usuarioRepository.findByApellidoContaining(apellido);
 	}
 
-	public List<Destino> autoComplete1Act(final String name) {
-		return destinoRepository.findByNameContaining(name);
+	public List<Destino> autoComplete1Act(final String destino) {
+		return destinoRepository.findByNombreContaining(destino);
 	}
 
 	public LocalDateTime default0Act() {

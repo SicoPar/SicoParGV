@@ -18,10 +18,9 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Where;
 
 import domainapp.modules.simple.dom.destino.Destino;
-import domainapp.modules.simple.dom.so.Usuario;
-import domainapp.modules.simple.dom.so.Vehiculo;
-import domainapp.modules.simple.dom.so.Viaje;
+import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.viaje.Viaje;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

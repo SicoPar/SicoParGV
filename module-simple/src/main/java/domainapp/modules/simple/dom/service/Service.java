@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.service;
 
 import java.util.Comparator;
 
@@ -23,7 +23,9 @@ import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
+import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Nombre_Control;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,10 +63,11 @@ public class Service implements Comparable<Service> {
     private long version;
 
 
-    Service(VehiculosDisponible vehiculo, String name,Usuario usuario) {
+    public Service(VehiculosDisponible vehiculo, String name,Usuario usuario) {
         this.vehiculo = vehiculo;
         this.name = name;
         this.usuario = usuario;
+        this.activo = true;
         
     }
 
@@ -87,6 +90,12 @@ public class Service implements Comparable<Service> {
     @Getter @Setter
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private String name;
+    
+    @Column(length = Documento.MAX_LEN, nullable = true)
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
+	@Getter
+	@Setter
+	private boolean activo;
 
 
     private final static Comparator<Service> comparator =

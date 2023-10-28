@@ -31,3 +31,5 @@
 //    @Inject VehiculoRepository vehiculoRepository;
 //    @Inject RepositoryService repositoryService;
 ////}
+package domainapp.modules.simple.dom.usuario;
+

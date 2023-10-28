@@ -1,4 +1,4 @@
-package domainapp.modules.simple.dom.so;
+package domainapp.modules.simple.dom.vehiculos_disponibles;
 
 
 
@@ -9,7 +9,8 @@ import javax.inject.Inject;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.CollectionLayout;
 
-import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.service.Service;
+import domainapp.modules.simple.dom.service.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 
 @Collection                                             

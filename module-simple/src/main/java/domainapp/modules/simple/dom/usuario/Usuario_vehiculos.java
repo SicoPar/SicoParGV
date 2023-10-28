@@ -24,3 +24,5 @@
 //
 //    @Inject VehiculoRepository VehiculoRepository;                
 //}
+package domainapp.modules.simple.dom.usuario;
+

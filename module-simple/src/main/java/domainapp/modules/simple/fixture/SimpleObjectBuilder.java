@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import org.apache.isis.testing.fixtures.applib.personas.BuilderScriptWithResult;
 
-import domainapp.modules.simple.dom.so.Usuario;
-import domainapp.modules.simple.dom.so.Usuarios;
+import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.usuario.Usuarios;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
