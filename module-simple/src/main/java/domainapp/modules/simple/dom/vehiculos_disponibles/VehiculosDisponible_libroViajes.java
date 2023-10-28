@@ -12,6 +12,7 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.clock.ClockService;
+import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
 import domainapp.modules.simple.dom.destino.Destino;
@@ -19,31 +20,69 @@ import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.usuario.UsuarioRepository;
 import domainapp.modules.simple.dom.viaje.Viaje;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Estado;
+import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.types.Razon;
 import domainapp.modules.simple.types.Pasajero;
 import lombok.RequiredArgsConstructor;
 
-@Action(semantics = SemanticsOf.IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-@ActionLayout(associateWith = "vehiculosDisponible", sequence = "1") // Cambio de "simple" a "vehiculo"
-@RequiredArgsConstructor
-public class VehiculosDisponible_libroViajes {
-	public final Usuario usuario;
-	public final Usuario pasajero;
-	public final VehiculosDisponible vehiculosDisponible;
-	public final Destino destino;
+@Action(
+	    semantics = SemanticsOf.IDEMPOTENT, 
+	    commandPublishing = Publishing.ENABLED, 
+	    executionPublishing = Publishing.ENABLED
+	)
+	@ActionLayout(associateWith = "vehiculosDisponible", sequence = "1")
+	@RequiredArgsConstructor
+	public class VehiculosDisponible_libroViajes {
+	    
+	    private final VehiculosDisponible vehiculosDisponible;
 
-	public VehiculosDisponible_libroViajes(VehiculosDisponible vehiculosDisponible) {
-		this.usuario = null;
-		this.pasajero = null;
-		this.vehiculosDisponible = vehiculosDisponible;
-		this.destino = null; // Opcional: Puedes inicializar destino aquí si es necesario
-	}
+	    @Inject
+	    private MessageService messageService;
 
-	public Viaje act(Usuario usuario,@Pasajero Usuario pasajero, Destino destino,String razon, LocalDate fecha,Riesgo riesgo) {
-		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,fecha,riesgo));
-	}
+	    @Inject
+	    private RepositoryService repositoryService;
+
+	    @Inject
+	    private ViajeRepository viajeRepository;
+
+	    public Viaje act(Usuario usuario, @Pasajero Usuario pasajero, Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
+	        if (usuario != null) {
+	            Licencia licencia = usuario.getLicencia();
+	            
+	            if (Licencia.No_Contiene_Licencia.equals(licencia)) {
+	                messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
+	                return null;
+	            }
+	        } else {
+	            messageService.raiseError("El usuario no puede ser nulo.");
+	            return null;
+	        }
+	        
+	        List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(), fecha);
+	        
+	        if (!viajesExistentes.isEmpty()) {
+	            messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
+	            return null;
+	        }
+	        
+	        if (Riesgo.alto.equals(riesgo)) {
+	            if (pasajero == null) {
+	                messageService.raiseError("En caso de Riesgo alto, se requiere un pasajero.");
+	                return null;
+	            }
+	        } 
+	            if (usuario != null && usuario.equals(pasajero)) {
+	                messageService.raiseError("El usuario no puede ser igual al pasajero.");
+	                return null;
+	            }
+	        
+
+	        return repositoryService.persist(new Viaje(usuario, pasajero, vehiculosDisponible, destino, razon, fecha, riesgo));
+	    }
+	
 
 	public String validate0Act(LocalDate visitAt) {
 		return clockService.getClock().nowAsLocalDate().isBefore(visitAt) ? null : "Must be in the future";
@@ -53,8 +92,12 @@ public class VehiculosDisponible_libroViajes {
 		return usuarioRepository.findByApellidoContaining(apellido);
 	}
 
-	public List<Destino> autoComplete1Act(final String destino) {
-		return destinoRepository.findByNombreContaining(destino);
+	public List<Usuario> autoComplete1Act(final String apellido) {
+		return usuarioRepository.findByApellidoContaining(apellido);
+	}
+
+	public List<Destino> autoComplete2Act(final String nombre) {
+		return destinoRepository.findByNombreContaining(nombre);
 	}
 
 	public LocalDateTime default0Act() {
@@ -63,8 +106,7 @@ public class VehiculosDisponible_libroViajes {
 
 	@Inject
 	ClockService clockService;
-	@Inject
-	RepositoryService repositoryService;
+
 	@Inject
 	UsuarioRepository usuarioRepository;
 	@Inject

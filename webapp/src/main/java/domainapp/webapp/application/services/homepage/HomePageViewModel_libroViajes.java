@@ -39,47 +39,43 @@ public class HomePageViewModel_libroViajes {
 
 	final HomePageViewModel homePageViewModel;
 
-	public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible,
-			Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
-		if (usuario != null) {
-			Licencia licencia = usuario.getLicencia();
+	public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
+	    if (usuario != null) {
+	        Licencia licencia = usuario.getLicencia();
+	        
+	        if (Licencia.No_Contiene_Licencia.equals(licencia)) {
+	            messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
+	            return homePageViewModel;
+	        }
 
-			if (Licencia.No_Contiene_Licencia.equals(licencia)) {
-				messageService
-						.raiseError("El usuario seleccionado, no puede realizar este viaje porque no tiene licencia");
+	        List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(), fecha);
+	        if (!viajesExistentes.isEmpty()) {
+	            messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
+	            return homePageViewModel;
+	        }
 
-			} else {
+	        if (Riesgo.alto.equals(riesgo)) {
+	            if (pasajero == null) {
+	                messageService.raiseError("En caso de Riesgo alto, se requiere un pasajero.");
+	                return homePageViewModel;
+	            }
+	        }
+	            if (usuario != null && usuario.equals(pasajero)) {
+	                messageService.raiseError("El usuario no puede ser igual al pasajero.");
+	                return homePageViewModel;
+	            }
 
-				List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(),
-						fecha);
-
-				if (!viajesExistentes.isEmpty()) {
-
-					messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
-				} else {
-					if (Riesgo.alto.equals(riesgo)) {
-					    if (pasajero == null) {
-					        messageService.raiseError("En caso de Riesgo alto, se requiere un pasajero.");
-					    } else if (usuario != null && usuario.equals(pasajero)) {
-					        messageService.raiseError("El usuario no puede ser igual al pasajero.");
-					    } else {
-					        // Realizar la lógica cuando el riesgo es alto, el pasajero no es nulo, y usuario no es igual al pasajero.
-					        Viaje viaje = wrapperFactory
-					            .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
-					            .act(usuario, pasajero, destino, razon, fecha, riesgo);
-					        return  viaje ;
-					    }
-					} else {
-					    // Realizar la lógica cuando el riesgo no es alto o cuando "pasajero" es nulo.
-					    Viaje viaje = wrapperFactory
-					        .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
-					        .act(usuario, pasajero, destino, razon, fecha, riesgo);
-					    return  viaje ;
-					}
-				}
-			}
-		}
-		return homePageViewModel;
+	      
+	        
+	            Viaje viaje = wrapperFactory
+	                .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
+	                .act(usuario, pasajero, destino, razon, fecha, riesgo);
+	            return viaje;
+	        
+	    } else {
+	        messageService.raiseError("El usuario no puede ser nulo.");
+	        return homePageViewModel;
+	    }
 	}
 
 	public List<Usuario> autoComplete0Act(final String apellido) {
