@@ -89,15 +89,15 @@ import lombok.RequiredArgsConstructor;
 	}
 
 	public List<Usuario> autoComplete0Act(final String apellido) {
-		return usuarioRepository.findByApellidoContaining(apellido);
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
 	}
 
 	public List<Usuario> autoComplete1Act(final String apellido) {
-		return usuarioRepository.findByApellidoContaining(apellido);
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
 	}
 
 	public List<Destino> autoComplete2Act(final String nombre) {
-		return destinoRepository.findByNombreContaining(nombre);
+		return destinoRepository.findByNombreContainingAndActivo(nombre,true);
 	}
 
 	public LocalDateTime default0Act() {

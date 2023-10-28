@@ -76,9 +76,13 @@ public class Usuarios {
 
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT, promptStyle = PromptStyle.DIALOG_SIDEBAR)
-	public List<Usuario> BuscarUsuarioPorApellido(@Name final String apellido) {
-		return usuarioRepository.findByApellidoContaining(apellido);
+	public List<Usuario> BuscarUsuarioActivoPorApellido(@Name final String apellido) {
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
 	}
+	
+	
+	
+	
 
 	@Programmatic
 	public Usuario findByApellidoExact(final String apellido) {
@@ -90,61 +94,10 @@ public class Usuarios {
 	public List<Usuario> ListaDeUsuariosActivos() {
 		 return usuarioRepository.findByActivo(true);
 	}
+	
+
 
 	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<Service> ListaDeServices() {
-		return serviceRepository.findAll();
-	}
-	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<VehiculosDisponible> ListaDeVehiculosDisponibles() {
-		return vehiculosDisponible.findAll();
-	}
-	
-//	@Action(semantics = SemanticsOf.SAFE)
-//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
-//	public List<Service> listarServiciosPorVehiculo( Vehiculo vehiculo) {
-//	    return serviceRepository.findByVehiculo(vehiculo);
-//	}
-
-//	@Action(semantics = SemanticsOf.SAFE)
-//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
-//	 public List<Service> listarServiciosPorVehiculo(Vehiculo vehiculo) {
-//	        if(vehiculo == null) return Collections.emptyList();
-//	        return serviceRepository.findByVehiculo(vehiculo);
-//	    }
-	
-//	@Action(semantics = SemanticsOf.SAFE)
-//	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Vehículo")
-//	public List<Service> listarServiciosPorVehiculo(Vehiculo vehiculo) {
-//	    if (vehiculo == null) {
-//	        return Collections.emptyList();
-//	    }
-//	    return serviceRepository.findByVehiculo(vehiculo);
-//	}
-	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Patente de Vehículo")
-	public List<Service> listarServiciosPorPatenteVehiculo(@Patente final String patente) {
-	    return serviceRepository.findByVehiculo_Patente(patente);
-	}
-	
-	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por Patente de Vehículo")
-	public List<Viaje> listarViajesPorPatenteVehiculo(@Patente final String patente) {
-	    return viajeRepository.findByVehiculosDisponible_Patente(patente);
-	}
-	
-	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Buscar Viajes por Patente de Vehículo y Fecha de Viaje")
-	public List<Viaje> buscarViajesPorPatenteYFecha(String patente, LocalDate fecha) {
-	    return viajeRepository.findByPatenteAndFecha(patente, fecha);
-	}
 	
 	
 	
@@ -152,31 +105,14 @@ public class Usuarios {
 	
 	
 	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por  Usuario")
-	public List<Viaje> findByUsuario_documento(Usuario usuario) {
-	    return viajeRepository.findByUsuario(usuario);
-	}
-	
-	
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Viajes por destino")
-	public List<Viaje> findByDestino_nombre(@Nombre_Destino final String destino) {
-	    return viajeRepository.findByDestino_nombre(destino);
-	}
-	
+
 	
 	
 	
 	
 
 
-	@Action(semantics = SemanticsOf.SAFE)
-	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-	public List<Viaje> ListaDeViajes() {
-		return viajeRepository.findAll();
-	}
-
+	
 	@Programmatic
 	public void ping() {
 		jpaSupportService.getEntityManager(Usuario.class).ifSuccess(entityManager -> {

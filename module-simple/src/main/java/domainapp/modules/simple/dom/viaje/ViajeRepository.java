@@ -27,4 +27,6 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
 	   List<Viaje> findByDestino(Destino destino);
 	   List<Viaje> findByDestino_nombre(String nombre);
 	   
+	   List<Viaje> findByActivo(boolean activo);
+	   List<Viaje> findByUsuario_documentoAndActivo(String documento,boolean activo);
 }

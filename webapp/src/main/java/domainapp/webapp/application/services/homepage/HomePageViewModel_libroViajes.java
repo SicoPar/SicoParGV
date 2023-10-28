@@ -65,8 +65,6 @@ public class HomePageViewModel_libroViajes {
 	                return homePageViewModel;
 	            }
 
-	      
-	        
 	            Viaje viaje = wrapperFactory
 	                .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
 	                .act(usuario, pasajero, destino, razon, fecha, riesgo);
@@ -79,15 +77,15 @@ public class HomePageViewModel_libroViajes {
 	}
 
 	public List<Usuario> autoComplete0Act(final String apellido) {
-		return usuarioRepository.findByApellidoContaining(apellido);
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
 	}
 
 	public List<Usuario> autoComplete1Act(final String apellido) {
-		return usuarioRepository.findByApellidoContaining(apellido);
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
 	}
 
 	public List<Destino> autoComplete3Act(final String nombre) {
-		return destinoRepository.findByNombreContaining(nombre);
+		return destinoRepository.findByNombreContainingAndActivo(nombre,true);
 	}
 //    public List<Destino> autoComplet0Act(final String nombre) {
 //        List<Destino> destinos = destinoRepository.findByNameContaining(nombre);
@@ -99,7 +97,7 @@ public class HomePageViewModel_libroViajes {
 //    }
 
 	public List<VehiculosDisponible> autoComplete2Act(final String patente) {
-		return vehiculosDisponibleRepository.findByPatenteContaining(patente);
+		return vehiculosDisponibleRepository.findByPatenteContainingAndActivo(patente,true);
 	}
 
 //	public LocalDateTime defaultAct(Usuario usuario, VehiculosDisponible vehiculo) {

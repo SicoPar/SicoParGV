@@ -58,22 +58,21 @@ public class Destinos {
     public List<Destino> findBydestino(
             @Nombre_Control final String nombre
             ) {
-        return destinoRepository.findByNombreContaining(nombre);
+        return destinoRepository.findByNombreContainingAndActivo(nombre,true);
     }
 
 
-    @Programmatic
-    public Destino findByNameExact(final String nombre) {
-        return destinoRepository.findByNombre(nombre);
-    }
-
-
+//    @Programmatic
+//    public Destino findByNameExact(final String nombre) {
+//        return destinoRepository.findByNombreAndActivo(nombre,true);
+//    }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    public List<Destino> listAll() {
-        return destinoRepository.findAll();
-    }
+	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+	public List<Destino> ListaDeDestinosActivos() {
+		 return destinoRepository.findByActivo(true);
+	}
+
 
 
 

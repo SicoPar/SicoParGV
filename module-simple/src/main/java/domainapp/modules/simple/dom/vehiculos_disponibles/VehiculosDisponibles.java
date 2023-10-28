@@ -67,22 +67,27 @@ public class VehiculosDisponibles {
     public List<VehiculosDisponible> findByName(
            @Patente final String patente
             ) {
-        return VehiculosDisponibleRepository.findByPatenteContaining(patente);
+        return VehiculosDisponibleRepository.findByPatenteContainingAndActivo(patente,true);
     }
 
 
     @Programmatic
     public VehiculosDisponible findByNameExact(final String patente) {
-        return VehiculosDisponibleRepository.findByPatente(patente);
+        return VehiculosDisponibleRepository.findByPatenteAndActivo(patente,true);
     }
 
+	@Action(semantics = SemanticsOf.SAFE)
+	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+	public List<VehiculosDisponible> ListaDeVehiculosDisponibleActivos() {
+		 return VehiculosDisponibleRepository.findByActivo(true);
+	}
 
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    public List<VehiculosDisponible> listAll() {
-        return VehiculosDisponibleRepository.findAll();
-    }
+//
+//    @Action(semantics = SemanticsOf.SAFE)
+//    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+//    public List<VehiculosDisponible> listAll() {
+//        return VehiculosDisponibleRepository.findAll();
+//    }
 
 
 

@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import domainapp.modules.simple.dom.usuario.Usuario;
+
 public interface DestinoRepository extends JpaRepository<Destino, Long> {
 
-    List<Destino> findByNombreContaining(final String nombre);
+    List<Destino> findByNombreContainingAndActivo(final String nombre,boolean activo);
 
-    Destino findByNombre(final String nombre);
-
+//    Destino findByNombreAndActivo(final String nombre,boolean activo);
+    List<Destino> findByActivo(boolean activo);
 }

@@ -13,12 +13,15 @@ import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
 import domainapp.modules.simple.dom.destino.Destinos;
 import domainapp.modules.simple.dom.service.Service;
+import domainapp.modules.simple.dom.service.Services;
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.usuario.UsuarioRepository;
 import domainapp.modules.simple.dom.usuario.Usuarios;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponibles;
 import domainapp.modules.simple.dom.viaje.Viaje;
 import domainapp.modules.simple.dom.viaje.ViajeRepository;
+import domainapp.modules.simple.dom.viaje.Viajes;
 
 import java.util.stream.Collectors;
 
@@ -36,19 +39,19 @@ public class HomePageViewModel {
 	}
 
 	public List<Destino> getDestinos() {
-		return destino.listAll();
+		return destino.ListaDeDestinosActivos();
 	}
 	
 	public List<Service> getServices() {
-		return usuario.ListaDeServices();
+		return service.ListaDeServicesActivos();
 	}
 	
 	public List<VehiculosDisponible> getVehiculosDisponibles() {
-		return usuario.ListaDeVehiculosDisponibles();
+		return vehiculos.ListaDeVehiculosDisponibleActivos();
 	}
 	
 	public List<ViajePlusUsuario> getViaje() {
-        return viajeRepository.findAll()
+        return viaje.ListaDeViajesActivos()
                 .stream()
                 .map(ViajePlusUsuario::new)
                 .collect(Collectors.toList());
@@ -57,8 +60,14 @@ public class HomePageViewModel {
 	@Inject
 	Usuarios usuario;
 	@Inject
-	Destinos destino;
+	VehiculosDisponibles vehiculos;
 	
+	@Inject
+	Services service;
+	@Inject
+	Destinos destino;
+	@Inject
+	Viajes viaje;
 	@Inject
 	ViajeRepository viajeRepository;
 	@Inject
