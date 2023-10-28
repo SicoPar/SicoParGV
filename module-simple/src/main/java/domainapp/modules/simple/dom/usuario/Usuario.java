@@ -36,7 +36,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import domainapp.modules.simple.types.Nombre;
-import domainapp.modules.simple.types.prueba;
+import domainapp.modules.simple.types.Pasajero;
 import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Genero;
 import domainapp.modules.simple.enumeradores.Licencia;
@@ -198,7 +198,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	private String telefono;
 	
-	@prueba
+	@Pasajero
 	@Column(length = Documento.MAX_LEN, nullable = true)
 	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.6")
 	@Getter

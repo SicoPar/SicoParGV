@@ -23,7 +23,7 @@ public class Listener_vehiculosDisponibleDelete {
 		case DISABLE:
 			VehiculosDisponible vehiculosDisponible = ev.getSubject();
 
-			List<Viaje> viajesVehiculo = viajeRepository.findByVehiculosDisponibleOrderByVisitAtDesc(vehiculosDisponible);
+			List<Viaje> viajesVehiculo = viajeRepository.findByVehiculosDisponibleOrderByFechaDesc(vehiculosDisponible);
 
 			
 			boolean tienesViajesPendientes = viajesVehiculo.stream()

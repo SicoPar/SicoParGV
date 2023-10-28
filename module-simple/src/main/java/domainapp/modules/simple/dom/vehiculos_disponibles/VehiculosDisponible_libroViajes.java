@@ -22,7 +22,7 @@ import domainapp.modules.simple.dom.viaje.Viaje;
 import domainapp.modules.simple.enumeradores.Estado;
 import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.types.Razon;
-import domainapp.modules.simple.types.prueba;
+import domainapp.modules.simple.types.Pasajero;
 import lombok.RequiredArgsConstructor;
 
 @Action(semantics = SemanticsOf.IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
@@ -41,8 +41,8 @@ public class VehiculosDisponible_libroViajes {
 		this.destino = null; // Opcional: Puedes inicializar destino aquí si es necesario
 	}
 
-	public Viaje act(Usuario usuario,@prueba Usuario pasajero, Destino destino,String razon, LocalDate visitAt,Riesgo riesgo,Estado estado) {
-		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,visitAt,riesgo,estado));
+	public Viaje act(Usuario usuario,@Pasajero Usuario pasajero, Destino destino,String razon, LocalDate visitAt,Riesgo riesgo) {
+		return repositoryService.persist(new Viaje(usuario,pasajero, vehiculosDisponible, destino,razon,visitAt,riesgo));
 	}
 
 	public String validate0Act(LocalDate visitAt) {

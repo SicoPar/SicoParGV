@@ -59,7 +59,7 @@ import domainapp.modules.simple.types.Email;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Nombre;
 import domainapp.modules.simple.types.Razon;
-import domainapp.modules.simple.types.prueba;
+import domainapp.modules.simple.types.Pasajero;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -68,7 +68,7 @@ import lombok.ToString;
 
 @Entity
 @Table(schema = "simple", name = "Viaje", uniqueConstraints = {
-		@UniqueConstraint(name = "Viaje__vehiculosDisponible_visitAt__UNQ", columnNames = { "vehiculoDisponible_id",
+		@UniqueConstraint(name = "Viaje__vehiculosDisponible_fecha__UNQ", columnNames = { "vehiculoDisponible_id",
 				"name" }) })
 @EntityListeners(IsisEntityListener.class)
 @DomainObject(logicalTypeName = "simple.Viaje", entityChangePublishing = Publishing.ENABLED)
@@ -93,22 +93,22 @@ public class Viaje implements Comparable<Viaje> {
 	@Setter
 	private long version;
 
-	public Viaje(Usuario usuario,@prueba Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino,String razon, LocalDate visitAt,Riesgo riesgo,Estado estado) {
+	public Viaje(Usuario usuario,@Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino,String razon, LocalDate fecha,Riesgo riesgo) {
 		this.usuario = usuario;
 		this.pasajero = pasajero;
 		this.vehiculosDisponible = vehiculosDisponible;
 		this.destino = destino;
 		this.razon = razon;
-		this.visitAt = visitAt;
+		this.fecha = fecha;
 		this.riesgo = riesgo;
-		this.estado = estado;
+		this.estado = Estado.En_Espera;
 		this.activo = true;
 
 	}
 
 	public String title() {
 		return titleService.titleOf(getVehiculosDisponible()) + " @ "
-				+ getVisitAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				+ getFecha().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 	}
 
 	@ManyToOne(optional = false)
@@ -138,7 +138,7 @@ public class Viaje implements Comparable<Viaje> {
 	
 	
 	
-	@prueba
+	@Pasajero
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "pasajero_id", nullable = true)
 	@PropertyLayout(fieldSetId = "name", sequence = "4")
@@ -148,18 +148,18 @@ public class Viaje implements Comparable<Viaje> {
 	
 	
 	
-	@prueba
+	@Pasajero
 	@Column(length = Documento.MAX_LEN, nullable = true)
 	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.6")
 	@Getter
 	@Setter
 	private String prueba;
 
-	@Column(name = "visitAt", nullable = false)
+	@Column(name = "fecha", nullable = false)
 	@Getter
 	@Setter
 	@PropertyLayout(fieldSetId = "name", sequence = "2")
-	private LocalDate visitAt;
+	private LocalDate fecha;
 
 	@Razon
 	@Column(name = "razon", length = Razon.MAX_LEN, nullable = true)
@@ -189,7 +189,7 @@ public class Viaje implements Comparable<Viaje> {
 	private boolean activo;
 
 	private final static Comparator<Viaje> comparator = Comparator.comparing(Viaje::getVehiculosDisponible)
-			.thenComparing(Viaje::getVisitAt);
+			.thenComparing(Viaje::getFecha);
 
 	@Override
 	public int compareTo(final Viaje other) {

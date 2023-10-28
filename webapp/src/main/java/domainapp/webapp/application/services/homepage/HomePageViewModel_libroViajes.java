@@ -30,7 +30,7 @@ import domainapp.modules.simple.enumeradores.Estado;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.types.Patente;
-import domainapp.modules.simple.types.prueba;
+import domainapp.modules.simple.types.Pasajero;
 import lombok.RequiredArgsConstructor;
 
 @Action
@@ -39,8 +39,8 @@ public class HomePageViewModel_libroViajes {
 
 	final HomePageViewModel homePageViewModel;
 
-	public Object act(Usuario usuario, @prueba Usuario pasajero, VehiculosDisponible vehiculosDisponible,
-			Destino destino, String razon, LocalDate visitAt, boolean showVisit, Riesgo riesgo, Estado estado) {
+	public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible,
+			Destino destino, String razon, LocalDate fecha, boolean showVisit, Riesgo riesgo) {
 		if (usuario != null) {
 			Licencia licencia = usuario.getLicencia();
 
@@ -51,7 +51,7 @@ public class HomePageViewModel_libroViajes {
 			} else {
 
 				List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(),
-						visitAt);
+						fecha);
 
 				if (!viajesExistentes.isEmpty()) {
 
@@ -66,14 +66,14 @@ public class HomePageViewModel_libroViajes {
 					        // Realizar la lógica cuando el riesgo es alto, el pasajero no es nulo, y usuario no es igual al pasajero.
 					        Viaje viaje = wrapperFactory
 					            .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
-					            .act(usuario, pasajero, destino, razon, visitAt, riesgo, estado);
+					            .act(usuario, pasajero, destino, razon, fecha, riesgo);
 					        return showVisit ? viaje : homePageViewModel;
 					    }
 					} else {
 					    // Realizar la lógica cuando el riesgo no es alto o cuando "pasajero" es nulo.
 					    Viaje viaje = wrapperFactory
 					        .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
-					        .act(usuario, pasajero, destino, razon, visitAt, riesgo, estado);
+					        .act(usuario, pasajero, destino, razon, fecha, riesgo);
 					    return showVisit ? viaje : homePageViewModel;
 					}
 				}

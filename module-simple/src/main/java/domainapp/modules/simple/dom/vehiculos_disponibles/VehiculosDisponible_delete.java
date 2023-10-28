@@ -37,7 +37,7 @@ public class VehiculosDisponible_delete {
 	    public void act() {
 
         
-	    	List<Viaje> viajesRelacionados = viajeRepository.findByVehiculosDisponibleOrderByVisitAtDesc(vehiculosDisponible);
+	    	List<Viaje> viajesRelacionados = viajeRepository.findByVehiculosDisponibleOrderByFechaDesc(vehiculosDisponible);
 	    	 List<Service> servicesRelacionados = serviceRepository.findByVehiculo(vehiculosDisponible);
 	    	for (Viaje viaje : viajesRelacionados) {
                

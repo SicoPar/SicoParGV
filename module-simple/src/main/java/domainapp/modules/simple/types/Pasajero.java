@@ -13,13 +13,13 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
-@Property(editing = Editing.ENABLED, maxLength = prueba.MAX_LEN, optionality = Optionality.OPTIONAL, mustSatisfy = prueba.Spec.class)
+@Property(editing = Editing.ENABLED, maxLength = Pasajero.MAX_LEN, optionality = Optionality.OPTIONAL, mustSatisfy = Pasajero.Spec.class)
 
-@Parameter(maxLength = prueba.MAX_LEN, optionality = Optionality.OPTIONAL,mustSatisfy = prueba.Spec.class)
+@Parameter(maxLength = Pasajero.MAX_LEN, optionality = Optionality.OPTIONAL,mustSatisfy = Pasajero.Spec.class)
 
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface prueba {
+public @interface Pasajero {
 
 	int MAX_LEN = 50;
 
