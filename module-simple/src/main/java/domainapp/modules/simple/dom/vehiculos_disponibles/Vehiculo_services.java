@@ -20,8 +20,8 @@ public class Vehiculo_services {
     private final VehiculosDisponible vehiculo;                    
 
     public List<Service> coll() {
-        return controlRepository.findByVehiculo(vehiculo);  
+        return serviceRepository.findByVehiculoAndActivo(vehiculo,true);  
     }
 
-    @Inject ServiceRepository controlRepository;                
+    @Inject ServiceRepository serviceRepository;                
 }

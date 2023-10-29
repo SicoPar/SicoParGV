@@ -44,9 +44,9 @@ public class VehiculoDisponible_AgregarService {
     UsuarioRepository usuarioRepository;
 
     // Nuevo método para obtener la lista de usuarios disponibles
-    public List<Usuario> choicesUsuario() {
-        return usuarioRepository.findAll();
-    }
+    public List<Usuario> autoComplete0Act(final String apellido) {
+		return usuarioRepository.findByApellidoContainingAndActivo(apellido,true);
+	}
 
  
 }

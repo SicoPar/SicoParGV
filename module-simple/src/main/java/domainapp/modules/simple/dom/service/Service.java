@@ -1,8 +1,11 @@
 package domainapp.modules.simple.dom.service;
 
+import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+
 import java.time.LocalDate;
 import java.util.Comparator;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,15 +22,21 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
+import org.apache.isis.applib.services.message.MessageService;
+import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.services.title.TitleService;
 import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
+import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Riesgo;
 import domainapp.modules.simple.enumeradores.TipoService;
 import domainapp.modules.simple.types.Documento;
@@ -79,6 +88,17 @@ public class Service implements Comparable<Service> {
         
     }
 
+    
+    @Inject @javax.persistence.Transient RepositoryService repositoryService;
+    @Inject @javax.persistence.Transient TitleService titleService;
+    @Inject @javax.persistence.Transient MessageService messageService;
+
+    
+    
+    
+    
+    
+    
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "vehiculo_id")
@@ -123,6 +143,21 @@ public class Service implements Comparable<Service> {
 
     private final static Comparator<Service> comparator =
             Comparator.comparing(Service::getVehiculo).thenComparing(Service::getKilometros);
+    
+    
+    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(
+            associateWith = "service", position = ActionLayout.Position.PANEL,
+            describedAs = "Quieres elimnar este service?")
+    public void delete() {
+        final String title = titleService.titleOf(this);
+        messageService.informUser(String.format("'%s' deleted", title));
+        setActivo(false);
+        
+    }
+
+    
+    
 
     @Override
     public int compareTo(final Service other) {

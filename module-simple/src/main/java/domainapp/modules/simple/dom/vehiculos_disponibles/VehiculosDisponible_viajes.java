@@ -21,7 +21,7 @@ public class VehiculosDisponible_viajes {
 
     public List<Viaje> coll() {
         if (viajeRepository != null) {
-            return viajeRepository.findByVehiculosDisponibleOrderByFechaDesc(vehiculosDisponible);
+            return viajeRepository.findByVehiculosDisponibleAndActivoOrderByFechaDesc(vehiculosDisponible,true);
         } else {
             throw new IllegalStateException("viajeRepository es nulo");
         }

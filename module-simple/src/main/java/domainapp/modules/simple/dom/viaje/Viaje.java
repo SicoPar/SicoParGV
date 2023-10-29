@@ -1,6 +1,7 @@
 package domainapp.modules.simple.dom.viaje;
 
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
+import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -203,6 +204,16 @@ public class Viaje implements Comparable<Viaje> {
 		setEstado(estado);
 		return this;
 	}
+	
+	 @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+	    @ActionLayout(
+	            associateWith = "Viaje", position = ActionLayout.Position.PANEL,
+	            describedAs = "Quieres elimnar este viaje?")
+	    public void delete() {
+	        final String title = titleService.titleOf(this);
+	        setActivo(false);
+	        
+	    }
 
 	@Inject
 	@Transient

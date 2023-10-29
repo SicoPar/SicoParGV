@@ -13,7 +13,7 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
-@Property(editing = Editing.ENABLED, maxLength = Email.MAX_LEN, optionality = Optionality.OPTIONAL, regexPattern = "[^@]+@[^@]+[.][^@]+", regexPatternReplacement = "Formato de direccion de correo Incorrecta", mustSatisfy = Email.Spec.class)
+@Property( maxLength = Email.MAX_LEN, optionality = Optionality.OPTIONAL, regexPattern = "[^@]+@[^@]+[.][^@]+", regexPatternReplacement = "Formato de direccion de correo Incorrecta", mustSatisfy = Email.Spec.class)
 @PropertyLayout(named = "E-mail")
 @Parameter(maxLength = Email.MAX_LEN, optionality = Optionality.OPTIONAL,mustSatisfy = Email.Spec.class)
 @ParameterLayout(named = "E-mail")

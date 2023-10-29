@@ -14,13 +14,13 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
 @Property(
-        editing = Editing.ENABLED,
+
         maxLength = Modelo.MAX_LEN,
         optionality = Optionality.OPTIONAL
 )
-@PropertyLayout(named = "modelito")   
+@PropertyLayout(named = "Modelo")   
 @Parameter(maxLength = Modelo.MAX_LEN, optionality = Optionality.OPTIONAL)
-@ParameterLayout(named = "modelito")  
+@ParameterLayout(named = "Modelo")  
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Modelo {

@@ -18,7 +18,7 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
 
 
 
-	List<Viaje> findByVehiculosDisponibleOrderByFechaDesc(VehiculosDisponible vehiculosDisponible);
+	List<Viaje> findByVehiculosDisponibleAndActivoOrderByFechaDesc(VehiculosDisponible vehiculosDisponible,boolean activo);
 	 List<Viaje> findByVehiculosDisponible_Patente(String patente);
 	   @Query("SELECT v FROM Viaje v WHERE v.vehiculosDisponible.patente = :patente AND v.fecha = :fecha")
 	    List<Viaje> findByPatenteAndFecha(@Param("patente") String patente, @Param("fecha") LocalDate fecha);

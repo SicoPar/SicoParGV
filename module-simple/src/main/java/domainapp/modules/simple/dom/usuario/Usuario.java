@@ -89,10 +89,10 @@ public class Usuario implements Comparable<Usuario> {
 	private long version;
 
 	public static Usuario withName(String apellido) {
-		return withName(apellido, null,null,null,null,null,null,null,null,null,null);
+		return withName(apellido, null,null,null,null,null,null,null,null,null);
 	}
 
-	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono,String prueba) {
+	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono) {
 		val Usuario = new Usuario();
 		Usuario.setApellido(apellido);
 		Usuario.setNombre(nombre);
@@ -104,7 +104,7 @@ public class Usuario implements Comparable<Usuario> {
 		Usuario.setLicencia(licencia);
 		Usuario.setEmail(email);
 		Usuario.setTelefono(telefono);
-		Usuario.setPrueba(prueba);
+		
 		Usuario.setActivo(true);
 		return Usuario;
 	}
@@ -198,12 +198,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	private String telefono;
 	
-	@Pasajero
-	@Column(length = Documento.MAX_LEN, nullable = true)
-	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.6")
-	@Getter
-	@Setter
-	private String prueba;
+
 	
 	
 	@Column(length = Documento.MAX_LEN, nullable = true)
@@ -212,19 +207,21 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	private boolean activo;
 
-	@Notes
-	@javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
-	@Getter
-	@Setter
-	@Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-	@PropertyLayout(fieldSetId = "notes", sequence = "4")
-	private String notes;
+
 
 	@Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-	@ActionLayout(associateWith = "apellido", promptStyle = PromptStyle.INLINE)
-	public Usuario updateName(@Name final String apellido, @Nombre final String nombre) {
+	@ActionLayout(associateWith = "Usuario", promptStyle = PromptStyle.DIALOG_MODAL)
+	public Usuario updateName(@Name final String apellido, @Nombre final String nombre,@Documento String documento, LocalDate fechaNacimiento,Sector sector,
+			String ciudad,Genero genero,Licencia licencia,String email,String telefono) {
 		setApellido(apellido);
 		setNombre(nombre);
+		setDocumento(documento);
+		setFechaNacimiento(fechaNacimiento);
+		setSector(sector);
+		setGenero(genero);
+		setLicencia(licencia);
+		setEmail(email);
+		setTelefono(telefono);
 		return this;
 	}
 

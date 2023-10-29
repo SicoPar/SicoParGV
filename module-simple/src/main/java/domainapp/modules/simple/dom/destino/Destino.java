@@ -111,8 +111,8 @@ public class Destino implements Comparable<Destino> {
 
 
     @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
-    public Destino updateName(
+    @ActionLayout(associateWith = "destino", promptStyle = PromptStyle.DIALOG_MODAL)
+    public Destino UpdateName(
     		  @Nombre_Destino final String nombre) {
         setNombre(nombre);
         return this;

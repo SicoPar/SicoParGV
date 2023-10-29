@@ -116,64 +116,65 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @Patente
     @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @PropertyLayout(fieldSetId = "name", sequence = "1.1")
     private String patente;
     
     @Patente
     @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @PropertyLayout(fieldSetId = "name", sequence = "1.2")
     private String Marca;
     
     @Modelo
     @Column(length = Modelo.MAX_LEN, nullable = true)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.5")
+    @PropertyLayout(fieldSetId = "name", sequence = "1.3")
     @Getter @Setter
     private String modelo;
     
     @Enumerated(EnumType.STRING)                                
 	@Column(nullable = false)
 	@Getter @Setter
-	@PropertyLayout(fieldSetId = "name", sequence = "4")     
+	@PropertyLayout(fieldSetId = "name", sequence = "2")     
 	private Color color;
     
     @Enumerated(EnumType.STRING)                                
 	@Column(nullable = false)
 	@Getter @Setter
-	@PropertyLayout(fieldSetId = "name", sequence = "5")     
+	@PropertyLayout(fieldSetId = "name", sequence = "3")     
 	private Automovil automovil;
     
     @Enumerated(EnumType.STRING)                                
 	@Column(nullable = false)
 	@Getter @Setter
-	@PropertyLayout(fieldSetId = "name", sequence = "6")     
+	@PropertyLayout(fieldSetId = "name", sequence = "4")     
 	private TipoCombustible Combustible;
     
     @Patente
     @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "7")
+    @PropertyLayout(fieldSetId = "name", sequence = "5")
     private String Motor;
     
     @Column(length = Documento.MAX_LEN, nullable = true)
-	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")
+	@PropertyLayout(fieldSetId = "contactDetails", sequence = "6")
 	@Getter
 	@Setter
 	private boolean activo;
 
-    @Notes
-    @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
-    @Getter @Setter
-    @Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
-    private String notes;
-
+  
 
     @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "patente", promptStyle = PromptStyle.INLINE)
+    @ActionLayout(associateWith = "simpleObject", promptStyle = PromptStyle.DIALOG_MODAL)
     public VehiculosDisponible updateName(
-           @Patente final String patente) {
+           @Patente final String patente,String modelo,Color color,Automovil automovil,TipoCombustible combustible,String marca,String motor) {
         setPatente(patente);
+        setModelo(modelo);
+        setColor(color);
+        setAutomovil(automovil);
+        setCombustible(combustible);
+        setMarca(marca);
+        setMotor(motor);
+
         return this;
     }
     public String default0UpdateName() {

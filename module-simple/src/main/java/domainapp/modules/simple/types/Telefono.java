@@ -11,7 +11,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.spec.AbstractSpecification;
 
-@Property(editing = Editing.ENABLED, maxLength = Telefono.MAX_LEN, optionality = Optionality.OPTIONAL, regexPattern = "[+]?[0-9 ]+", regexPatternReplacement = "Solo numeros y espacios ,opcionalmente puedes usar como prefijo el  '+'.  "
+@Property( maxLength = Telefono.MAX_LEN, optionality = Optionality.OPTIONAL, regexPattern = "[+]?[0-9 ]+", regexPatternReplacement = "Solo numeros y espacios ,opcionalmente puedes usar como prefijo el  '+'.  "
 		+ "Por ejemplo, '+54 2995332211', or '0299 5332211'",mustSatisfy = Telefono.Spec.class)
 @Parameter(maxLength = Telefono.MAX_LEN, optionality = Optionality.OPTIONAL,mustSatisfy = Telefono.Spec.class)
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })

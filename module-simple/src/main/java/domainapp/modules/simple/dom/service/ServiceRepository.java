@@ -14,7 +14,7 @@ import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 public interface ServiceRepository extends JpaRepository<Service, Long> {
 
-    List<Service> findByVehiculo(VehiculosDisponible vehiculo);
+    List<Service> findByVehiculoAndActivo(VehiculosDisponible vehiculo,boolean activo);
   
     List<Service> findByVehiculo_Patente(String patente);
     
