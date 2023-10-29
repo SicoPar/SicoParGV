@@ -70,7 +70,7 @@ import lombok.ToString;
 @Entity
 @Table(schema = "simple", name = "Viaje", uniqueConstraints = {
 		@UniqueConstraint(name = "Viaje__vehiculosDisponible_fecha__UNQ", columnNames = { "vehiculoDisponible_id",
-				"name" }) })
+				"usuario_id" }) })
 @EntityListeners(IsisEntityListener.class)
 @DomainObject(logicalTypeName = "simple.Viaje", entityChangePublishing = Publishing.ENABLED)
 @DomainObjectLayout()
@@ -87,12 +87,11 @@ public class Viaje implements Comparable<Viaje> {
 	@PropertyLayout(fieldSetId = "metadata", sequence = "1")
 	private Long id;
 
-	@Version
-	@Column(name = "version", nullable = false)
-	@PropertyLayout(fieldSetId = "metadata", sequence = "999")
-	@Getter
-	@Setter
-	private long version;
+	   @javax.persistence.Version
+	    @javax.persistence.Column(name = "version", nullable = false)
+	    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
+	    @Getter @Setter
+	    private long version;
 
 	public Viaje(Usuario usuario,@Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino,String razon, LocalDate fecha,Riesgo riesgo) {
 		this.usuario = usuario;

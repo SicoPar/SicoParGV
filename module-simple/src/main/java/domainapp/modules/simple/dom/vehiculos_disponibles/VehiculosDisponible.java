@@ -87,6 +87,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @Getter @Setter
     private long version;
 
+
     public static VehiculosDisponible withName(String patente, String marca , String modelo ,Color color,Automovil automovil,TipoCombustible combustible,String motor) {
         val simpleObject = new VehiculosDisponible();
         simpleObject.setPatente(patente);

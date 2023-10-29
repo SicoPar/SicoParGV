@@ -13,5 +13,6 @@ public interface VehiculosDisponibleRepository extends JpaRepository<VehiculosDi
     VehiculosDisponible findByPatenteAndActivo(final String patente,boolean activo);
 
     List<VehiculosDisponible> findByActivo(boolean activo);
+    VehiculosDisponible findByPatente(final String patente);
 
 }

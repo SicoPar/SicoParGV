@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class SimpleObjectBuilder extends BuilderScriptWithResult<Usuario> {
+public class UsuarioBuilder extends BuilderScriptWithResult<Usuario> {
 
     @Getter @Setter
     private String apellido;
@@ -43,8 +43,17 @@ public class SimpleObjectBuilder extends BuilderScriptWithResult<Usuario> {
     @Override
     protected Usuario buildResult(final ExecutionContext ec) {
 
-        checkParam("name", ec, String.class);
-
+        checkParam("apellido", ec, String.class);
+        checkParam("nombre", ec, String.class);
+        checkParam("documento", ec, String.class);
+        checkParam("fecha_nacimiento", ec, LocalDate.class);
+        checkParam("sector", ec, Sector.class);
+        checkParam("ciudad", ec, String.class);
+        checkParam("genero", ec, Genero.class);
+        checkParam("licencia", ec, Licencia.class);
+        checkParam("email", ec, String.class);
+        checkParam("email", ec, String.class);
+        checkParam("licencia", ec, String.class);
         return wrap(usuarios).CrearUsuario(apellido,nombre,documento,fecha_nacimiento,sector,ciudad,genero,licencia,email,telefono);
     }
 

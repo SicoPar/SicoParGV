@@ -8,7 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureScript;
 import org.apache.isis.testing.fixtures.applib.modules.ModuleWithFixtures;
 
+import domainapp.modules.simple.dom.destino.Destino;
+import domainapp.modules.simple.dom.service.Service;
 import domainapp.modules.simple.dom.usuario.Usuario;
+import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.dom.viaje.Viaje;
 
 @Configuration
@@ -22,7 +25,11 @@ public class ViajesModule implements ModuleWithFixtures {
         return new FixtureScript() {
             @Override
             protected void execute(ExecutionContext executionContext) {
-                repositoryService.removeAll(Viaje.class);
+                repositoryService.removeAll(Usuario.class);
+               repositoryService.removeAll(Destino.class);
+               repositoryService.removeAll(VehiculosDisponible.class);
+           
+
             }
         };
     }

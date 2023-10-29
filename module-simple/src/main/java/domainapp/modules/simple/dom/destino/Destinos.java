@@ -18,6 +18,7 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
+import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Nombre_Control;
 import domainapp.modules.simple.types.Nombre_Destino;
@@ -62,10 +63,10 @@ public class Destinos {
     }
 
 
-//    @Programmatic
-//    public Destino findByNameExact(final String nombre) {
-//        return destinoRepository.findByNombreAndActivo(nombre,true);
-//    }
+    @Programmatic
+    public Destino findByNombreAndActivo(final String nombre) {
+        return destinoRepository.findByNombreAndActivo(nombre,true);
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
@@ -73,7 +74,10 @@ public class Destinos {
 		 return destinoRepository.findByActivo(true);
 	}
 
-
+    @Programmatic
+	public Destino findByNombreExact(final String nombre) {
+		return destinoRepository.findByNombre(nombre);
+	}
 
 
 
@@ -88,6 +92,9 @@ public class Destinos {
                 q.getResultList();
             });
     }
+
+
+	
 
 
 }

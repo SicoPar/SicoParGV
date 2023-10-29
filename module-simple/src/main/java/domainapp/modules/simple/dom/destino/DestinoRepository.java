@@ -12,4 +12,8 @@ public interface DestinoRepository extends JpaRepository<Destino, Long> {
 
 //    Destino findByNombreAndActivo(final String nombre,boolean activo);
     List<Destino> findByActivo(boolean activo);
+    Destino findByNombre(final String nombre);
+    
+
+	Destino findByNombreAndActivo(String nombre, boolean activo);
 }

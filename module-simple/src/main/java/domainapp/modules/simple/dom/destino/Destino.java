@@ -43,7 +43,7 @@ import domainapp.modules.simple.types.Notes;
 @javax.persistence.Table(
     schema="simple",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "Destino___UNQ", columnNames = {"nombre"})
+        @javax.persistence.UniqueConstraint(name = "Destino_nombreasd_UNQ", columnNames = {"nombreasd"})
     }
 )
 @javax.persistence.NamedQueries({
@@ -91,17 +91,12 @@ public class Destino implements Comparable<Destino> {
 
     @Title
     @Nombre_Destino
-    @javax.persistence.Column(length = Nombre_Destino.MAX_LEN, nullable = false)
+    @Column(name = "nombre_destino", length = Nombre_Destino.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String nombre;
 
-    @Notes
-    @javax.persistence.Column(length = Notes.MAX_LEN, nullable = true)
-    @Getter @Setter
-    @Property(commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
-    private String notes;
+  
     
     @Column(length = Documento.MAX_LEN, nullable = true)
 	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.7")

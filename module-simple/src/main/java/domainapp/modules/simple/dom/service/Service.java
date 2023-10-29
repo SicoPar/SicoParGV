@@ -70,11 +70,12 @@ public class Service implements Comparable<Service> {
     @PropertyLayout(fieldSetId = "metadata", sequence = "1")
     private Long id;
 
-    @Version
-    @Column(name = "version", nullable = false)
+    @javax.persistence.Version
+    @javax.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;
+  
 
 
     public Service(VehiculosDisponible vehiculo,Usuario usuario,TipoService tipo,LocalDate fecha,String kilometros,Riesgo riesgo) {

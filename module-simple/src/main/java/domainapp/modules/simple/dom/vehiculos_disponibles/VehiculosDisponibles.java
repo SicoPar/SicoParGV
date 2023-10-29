@@ -72,7 +72,7 @@ public class VehiculosDisponibles {
 
 
     @Programmatic
-    public VehiculosDisponible findByNameExact(final String patente) {
+    public VehiculosDisponible findByPatenteExact(final String patente) {
         return VehiculosDisponibleRepository.findByPatenteAndActivo(patente,true);
     }
 

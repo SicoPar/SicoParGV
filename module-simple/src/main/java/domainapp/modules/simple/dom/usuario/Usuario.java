@@ -81,12 +81,11 @@ public class Usuario implements Comparable<Usuario> {
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@Version
-	@Column(name = "version", nullable = false)
-	@PropertyLayout(fieldSetId = "metadata", sequence = "999")
-	@Getter
-	@Setter
-	private long version;
+	   @javax.persistence.Version
+	    @javax.persistence.Column(name = "version", nullable = false)
+	    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
+	    @Getter @Setter
+	    private long version;
 
 	public static Usuario withName(String apellido) {
 		return withName(apellido, null,null,null,null,null,null,null,null,null);
