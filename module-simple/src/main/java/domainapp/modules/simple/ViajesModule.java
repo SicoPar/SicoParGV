@@ -28,6 +28,8 @@ public class ViajesModule implements ModuleWithFixtures {
                 repositoryService.removeAll(Usuario.class);
                repositoryService.removeAll(Destino.class);
                repositoryService.removeAll(VehiculosDisponible.class);
+               repositoryService.removeAll(Service.class);
+               repositoryService.removeAll(Viaje.class);
            
 
             }

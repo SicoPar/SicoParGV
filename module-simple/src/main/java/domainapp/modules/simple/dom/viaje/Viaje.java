@@ -211,6 +211,7 @@ public class Viaje implements Comparable<Viaje> {
 	    public void delete() {
 	        final String title = titleService.titleOf(this);
 	        setActivo(false);
+	        setEstado(Estado.Finalizado);
 	        
 	    }
 
