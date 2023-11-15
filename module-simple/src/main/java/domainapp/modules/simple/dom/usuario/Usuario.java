@@ -231,6 +231,31 @@ public class Usuario implements Comparable<Usuario> {
 	public String default1UpdateName() {
 		return getNombre();
 	}
+	public String default2UpdateName() {
+		return getDocumento();
+	}
+	public LocalDate default3UpdateName() {
+		return getFechaNacimiento();
+	}
+	public Sector default4UpdateName() {
+		return getSector();
+	}
+	public String default5UpdateName() {
+		return getCiudad();
+	}
+	public Genero default6UpdateName() {
+		return getGenero();
+	}
+	public Licencia default7UpdateName() {
+		return getLicencia();
+	}
+	public String default8UpdateName() {
+		return getEmail();
+	}
+	public String default9UpdateName() {
+		return getTelefono();
+	}
+	
 
 	public String validate0UpdateName(String newName) {
 		for (char prohibitedCharacter : "&%$!".toCharArray()) {

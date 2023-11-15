@@ -1,2 +1,5 @@
-name
-#version
+documento
+apellido
+nombre
+sector
+licencia

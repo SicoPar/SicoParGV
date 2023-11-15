@@ -1,2 +1,5 @@
-name
-id
+documento
+apellido
+nombre
+sector
+licencia

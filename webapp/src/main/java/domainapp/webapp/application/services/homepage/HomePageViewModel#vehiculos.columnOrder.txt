@@ -1,3 +1,7 @@
-vehiculosDisponible
+patente
+marca
 modelo
-usuario
+color
+automovil
+combustible
+motor

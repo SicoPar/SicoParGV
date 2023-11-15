@@ -181,6 +181,24 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     public String default0UpdateName() {
         return getPatente();
     }
+    public String default1UpdateName() {
+        return getModelo();
+    }
+    public Color default2UpdateName() {
+        return getColor();
+    }
+    public Automovil default3UpdateName() {
+        return getAutomovil();
+    }
+    public TipoCombustible default4UpdateName() {
+        return getCombustible();
+    }
+    public String default5UpdateName() {
+        return getMarca();
+    }
+    public String default6UpdateName() {
+        return getMotor();
+    }
     public String validate0UpdateName(String newName) {
         for (char prohibitedCharacter : "&%$!".toCharArray()) {
             if( newName.contains(""+prohibitedCharacter)) {
