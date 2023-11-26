@@ -1,7 +1,2 @@
 patente
-marca
-modelo
-color
-automovil
-combustible
-motor
+id

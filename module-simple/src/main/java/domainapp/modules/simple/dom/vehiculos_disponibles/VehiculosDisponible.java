@@ -1,5 +1,6 @@
 package domainapp.modules.simple.dom.vehiculos_disponibles;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,6 +43,8 @@ import domainapp.modules.simple.dom.viaje.Viaje;
 import domainapp.modules.simple.dom.viaje.ViajeRepository;
 import domainapp.modules.simple.enumeradores.Automovil;
 import domainapp.modules.simple.enumeradores.Color;
+import domainapp.modules.simple.enumeradores.Genero;
+import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Sector;
 import domainapp.modules.simple.enumeradores.TipoCombustible;
 import domainapp.modules.simple.types.Documento;
@@ -87,6 +90,14 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @Getter @Setter
     private long version;
 
+    public String RepoPatente(){ return this.patente;}
+    public String RepoMarca(){ return this.marca;}
+    public String RepoModelo(){ return this.modelo;}
+    public Color RepoColor(){ return this.color;}
+    public Automovil RepoAutomovil() { return this.automovil;}
+    public TipoCombustible RepoCombustible() {return this.combustible;}
+    public String RepoMotor() {return this.motor;}
+    
 
     public static VehiculosDisponible withName(String patente, String marca , String modelo ,Color color,Automovil automovil,TipoCombustible combustible,String motor) {
         val simpleObject = new VehiculosDisponible();
@@ -124,7 +135,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1.2")
-    private String Marca;
+    private String marca;
     
     @Modelo
     @Column(length = Modelo.MAX_LEN, nullable = true)
@@ -148,13 +159,13 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
 	@Column(nullable = false)
 	@Getter @Setter
 	@PropertyLayout(fieldSetId = "name", sequence = "4")     
-	private TipoCombustible Combustible;
+	private TipoCombustible combustible;
     
     @Patente
     @javax.persistence.Column(length = Patente.MAX_LEN, nullable = false)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "5")
-    private String Motor;
+    private String motor;
     
     @Column(length = Documento.MAX_LEN, nullable = true)
 	@PropertyLayout(fieldSetId = "contactDetails", sequence = "6")
@@ -180,25 +191,9 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
     }
     public String default0UpdateName() {
         return getPatente();
-    }
-    public String default1UpdateName() {
-        return getModelo();
-    }
-    public Color default2UpdateName() {
-        return getColor();
-    }
-    public Automovil default3UpdateName() {
-        return getAutomovil();
-    }
-    public TipoCombustible default4UpdateName() {
-        return getCombustible();
-    }
-    public String default5UpdateName() {
-        return getMarca();
-    }
-    public String default6UpdateName() {
-        return getMotor();
-    }
+    }    
+    
+    
     public String validate0UpdateName(String newName) {
         for (char prohibitedCharacter : "&%$!".toCharArray()) {
             if( newName.contains(""+prohibitedCharacter)) {
@@ -206,12 +201,7 @@ public class VehiculosDisponible implements Comparable<VehiculosDisponible> {
             }
         }
         return null;
-    }
-
-
-
-
-  
+    } 
 
     private final static Comparator<VehiculosDisponible> comparator =
             Comparator.comparing(VehiculosDisponible::getPatente);

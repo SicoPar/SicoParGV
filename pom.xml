@@ -55,6 +55,12 @@
                 <scope>test</scope>
                 <type>test-jar</type>
             </dependency>
+            
+            <dependency>
+            	<groupId>net.sf.jasperreports</groupId>
+            	<artifactId>jasperreports</artifactId>
+            	<version>6.20.6</version>
+        	</dependency>
 
         </dependencies>
     </dependencyManagement>

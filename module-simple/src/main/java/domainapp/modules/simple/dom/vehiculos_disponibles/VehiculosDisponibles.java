@@ -1,5 +1,6 @@
 package domainapp.modules.simple.dom.vehiculos_disponibles;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,13 +17,16 @@ import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.value.Blob;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
+import domainapp.modules.simple.dom.reportes.EjecutarReportes;
 import domainapp.modules.simple.enumeradores.Automovil;
 import domainapp.modules.simple.enumeradores.Color;
 import domainapp.modules.simple.enumeradores.TipoCombustible;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Patente;
+import net.sf.jasperreports.engine.JRException;
 
 @DomainService(
         nature = NatureOfService.VIEW,
@@ -90,6 +94,12 @@ public class VehiculosDisponibles {
 //    }
 
 
+//	@Action(semantics=SemanticsOf.SAFE)
+//	@ActionLayout(bookmarking=BookmarkPolicy.AS_ROOT)
+//	public Blob ExportarListadoVehiculosDisponibles() throws JRException, IOException{
+//		EjecutarReportes ejecutarReportes = new EjecutarReportes();
+//		return ejecutarReportes.ListadoVehiculosDisponibles(ListaDeVehiculosDisponibleActivos());
+//	}
 
 
     @Programmatic

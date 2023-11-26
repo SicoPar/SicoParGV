@@ -1,6 +1,3 @@
 usuario
 vehiculo
-tipo
-riesgo
-fecha
-kilometros
+name

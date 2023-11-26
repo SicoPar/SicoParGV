@@ -87,6 +87,18 @@ public class Usuario implements Comparable<Usuario> {
 	    @Getter @Setter
 	    private long version;
 
+	public String RepoNombre(){ return this.nombre;}
+    public String RepoApellido(){ return this.apellido;}
+    public String RepoDocumento(){ return this.documento;}
+    public LocalDate RepoFechaNacimiento(){ return this.fechaNacimiento;}
+    public Sector RepoSector() { return this.sector;}
+    public String RepoCiudad() {return this.ciudad;}
+    public Genero RepoGenero() {return this.genero;}
+    public Licencia RepoLicencia() {return this.licencia;}
+    public String RepoEmail() {return this.email;}
+    public String RepoTelefono() {return this.telefono;}   
+   
+	
 	public static Usuario withName(String apellido) {
 		return withName(apellido, null,null,null,null,null,null,null,null,null);
 	}
@@ -231,31 +243,6 @@ public class Usuario implements Comparable<Usuario> {
 	public String default1UpdateName() {
 		return getNombre();
 	}
-	public String default2UpdateName() {
-		return getDocumento();
-	}
-	public LocalDate default3UpdateName() {
-		return getFechaNacimiento();
-	}
-	public Sector default4UpdateName() {
-		return getSector();
-	}
-	public String default5UpdateName() {
-		return getCiudad();
-	}
-	public Genero default6UpdateName() {
-		return getGenero();
-	}
-	public Licencia default7UpdateName() {
-		return getLicencia();
-	}
-	public String default8UpdateName() {
-		return getEmail();
-	}
-	public String default9UpdateName() {
-		return getTelefono();
-	}
-	
 
 	public String validate0UpdateName(String newName) {
 		for (char prohibitedCharacter : "&%$!".toCharArray()) {

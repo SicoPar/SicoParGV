@@ -43,6 +43,8 @@ import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.Property;
 
 import domainapp.modules.simple.enumeradores.Estado;
+import domainapp.modules.simple.enumeradores.Genero;
+
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
@@ -55,6 +57,7 @@ import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.enumeradores.Licencia;
 import domainapp.modules.simple.enumeradores.Riesgo;
+import domainapp.modules.simple.enumeradores.Sector;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Email;
 import domainapp.modules.simple.types.Name;
@@ -92,6 +95,14 @@ public class Viaje implements Comparable<Viaje> {
 	    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
 	    @Getter @Setter
 	    private long version;
+	   
+	   	public Usuario RepoUsuario(){ return this.usuario;}
+	    public Usuario RepoPasajero(){ return this.pasajero;}
+	    public VehiculosDisponible RepoVehiculosDisponible(){ return this.vehiculosDisponible;}
+	    public Destino RepoDestino(){ return this.destino;}
+	    public String RepoRazon() { return this.razon;}
+	    public LocalDate RepoFecha() {return this.fecha;}
+	    public Riesgo RepoRiesgo() {return this.riesgo;}	    
 
 	public Viaje(Usuario usuario,@Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino,String razon, LocalDate fecha,Riesgo riesgo) {
 		this.usuario = usuario;
@@ -130,12 +141,7 @@ public class Viaje implements Comparable<Viaje> {
 	@PropertyLayout(fieldSetId = "name", sequence = "3")
 	@Getter
 	@Setter
-	private Usuario usuario;
-	
-	
-
-	
-	
+	private Usuario usuario;	
 	
 	
 	@Pasajero
@@ -211,7 +217,6 @@ public class Viaje implements Comparable<Viaje> {
 	    public void delete() {
 	        final String title = titleService.titleOf(this);
 	        setActivo(false);
-	        setEstado(Estado.Finalizado);
 	        
 	    }
 

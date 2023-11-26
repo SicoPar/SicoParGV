@@ -51,8 +51,6 @@ public class Services {
 //		return serviceRepository.findAll();
 //	}
 	
-
-
 	
 	@Action(semantics = SemanticsOf.SAFE)
 	@ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR, named = "Listar Servicios por Patente de Vehículo")

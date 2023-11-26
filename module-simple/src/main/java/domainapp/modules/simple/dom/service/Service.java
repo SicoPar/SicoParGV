@@ -37,7 +37,10 @@ import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 import domainapp.modules.simple.dom.usuario.Usuario;
 import domainapp.modules.simple.dom.vehiculos_disponibles.VehiculosDisponible;
 import domainapp.modules.simple.dom.viaje.ViajeRepository;
+import domainapp.modules.simple.enumeradores.Automovil;
+import domainapp.modules.simple.enumeradores.Color;
 import domainapp.modules.simple.enumeradores.Riesgo;
+import domainapp.modules.simple.enumeradores.TipoCombustible;
 import domainapp.modules.simple.enumeradores.TipoService;
 import domainapp.modules.simple.types.Documento;
 import domainapp.modules.simple.types.Nombre_Control;
@@ -76,7 +79,13 @@ public class Service implements Comparable<Service> {
     @Getter @Setter
     private long version;
   
-
+    public VehiculosDisponible RepoVehiculosDisponible(){ return this.vehiculo;}
+    public Usuario RepoUsuario(){ return this.usuario;}
+    public LocalDate RepoFecha(){ return this.fecha;}
+    public TipoService RepoTipoService(){ return this.tipo;}
+    public String RepoKilometros() { return this.kilometros;}
+    public Riesgo RepoRiesgo() {return this.riesgo;}
+    
 
     public Service(VehiculosDisponible vehiculo,Usuario usuario,TipoService tipo,LocalDate fecha,String kilometros,Riesgo riesgo) {
         this.vehiculo = vehiculo;
