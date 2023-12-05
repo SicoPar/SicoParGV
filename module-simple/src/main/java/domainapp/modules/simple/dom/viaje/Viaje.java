@@ -112,7 +112,7 @@ public class Viaje implements Comparable<Viaje> {
 		this.razon = razon;
 		this.fecha = fecha;
 		this.riesgo = riesgo;
-		this.estado = Estado.En_Espera;
+		this.estado = Estado.Espera;
 		this.activo = true;
 
 	}
