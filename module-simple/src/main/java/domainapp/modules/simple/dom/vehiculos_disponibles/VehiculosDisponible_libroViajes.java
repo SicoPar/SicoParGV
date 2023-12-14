@@ -52,7 +52,7 @@ import lombok.RequiredArgsConstructor;
 	        if (usuario != null) {
 	            Licencia licencia = usuario.getLicencia();
 	            
-	            if (Licencia.No_Contiene_Licencia.equals(licencia)) {
+	            if (Licencia.NoContiene.equals(licencia)) {
 	                messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
 	                return null;
 	            }

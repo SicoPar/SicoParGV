@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum Usuario_persona implements PersonaWithBuilderScript<UsuarioBuilder>, PersonaWithFinder<Usuario> {
 
-	FOO("Luciano", "Sicolo","42402145",LocalDate.of(2000, 2, 3),Sector.Dirección,"Cipolletti",Genero.Masculino,Licencia.Contiene_Licencia,"Luciano.sicolo@hotmail.com","29953332147"), BAR("Diego", "Parra","42422145",LocalDate.of(2000, 2, 3),Sector.Marketing,"Neuquen",Genero.Masculino,Licencia.No_Contiene_Licencia,"Diego.parra@hotmail.com","2995688796");
+	FOO("Luciano", "Sicolo","42402145",LocalDate.of(2000, 2, 3),Sector.Dirección,"Cipolletti",Genero.Masculino,Licencia.Contiene,"Luciano.sicolo@hotmail.com","29953332147"), BAR("Diego", "Parra","42422145",LocalDate.of(2000, 2, 3),Sector.Marketing,"Neuquen",Genero.Masculino,Licencia.NoContiene,"Diego.parra@hotmail.com","2995688796");
 
 	private final String nombre;
 	private final String apellido;

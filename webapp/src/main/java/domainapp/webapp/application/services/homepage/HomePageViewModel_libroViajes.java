@@ -16,6 +16,8 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.factory.FactoryService;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.wrapper.WrapperFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import domainapp.modules.simple.dom.destino.Destino;
 import domainapp.modules.simple.dom.destino.DestinoRepository;
@@ -37,37 +39,55 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomePageViewModel_libroViajes {
 
-	final HomePageViewModel homePageViewModel;
+	 // Agrega un logger
+    private static final Logger LOG = LoggerFactory.getLogger(HomePageViewModel_libroViajes.class);
 
-	public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
-	    if (usuario != null) {
-	        Licencia licencia = usuario.getLicencia();
-	        
-	        if (Licencia.No_Contiene_Licencia.equals(licencia)) {
-	            messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
-	            return homePageViewModel;
-	        }
+    final HomePageViewModel homePageViewModel;
 
-	        List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(), fecha);
-	        if (!viajesExistentes.isEmpty()) {
-	            messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
-	            return homePageViewModel;
-	        }
+    public Object act(Usuario usuario, @Pasajero Usuario pasajero, VehiculosDisponible vehiculosDisponible, Destino destino, String razon, LocalDate fecha, Riesgo riesgo) {
+        if (usuario != null) {
+            Licencia licencia = usuario.getLicencia();
 
-	        if (Riesgo.alto.equals(riesgo)) {
-	            if (pasajero == null) {
-	                messageService.raiseError("En caso de Riesgo alto, se requiere un pasajero.");
-	                return homePageViewModel;
-	            }
-	        }
-	            if (usuario != null && usuario.equals(pasajero)) {
-	                messageService.raiseError("El usuario no puede ser igual al pasajero.");
-	                return homePageViewModel;
-	            }
+            if (Licencia.NoContiene.equals(licencia)) {
+                messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
+                LOG.error("Error:El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
+                return homePageViewModel;
+            }
 
-	            Viaje viaje = wrapperFactory
-	                .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
-	                .act(usuario, pasajero, destino, razon, fecha, riesgo);
+            List<Viaje> viajesExistentes = viajeRepository.findByPatenteAndFecha(vehiculosDisponible.getPatente(), fecha);
+            if (!viajesExistentes.isEmpty()) {
+                messageService.raiseError("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
+                LOG.error("Este vehículo ya tiene un viaje programado para la fecha seleccionada.");
+                return homePageViewModel;
+            }
+
+            if (Riesgo.alto.equals(riesgo)) {
+                if (pasajero == null) {
+                    messageService.raiseError("En caso de Riesgo alto, se requiere un pasajero.");
+                    LOG.error("Error: En caso de Riesgo alto, se requiere un pasajero.");
+                    return homePageViewModel;
+                }
+            }
+            if (usuario != null && usuario.equals(pasajero)) {
+                messageService.raiseError("El usuario no puede ser igual al pasajero.");
+                LOG.error("Error: El usuario no puede ser igual al pasajero.");
+                return homePageViewModel;
+            }
+
+            // Registra los datos antes de realizar la acción
+            LOG.info("Usuario: {}", usuario);
+            LOG.info("Pasajero: {}", pasajero);
+            LOG.info("Vehículo Disponible: {}", vehiculosDisponible);
+            LOG.info("Destino: {}", destino);
+            LOG.info("Razón: {}", razon);
+            LOG.info("Fecha: {}", fecha);
+            LOG.info("Riesgo: {}", riesgo);
+
+            Viaje viaje = wrapperFactory
+                    .wrapMixin(VehiculosDisponible_libroViajes.class, vehiculosDisponible)
+                    .act(usuario, pasajero, destino, razon, fecha, riesgo);
+
+            LOG.info("Viaje creado: {}", viaje);
 	            return viaje;
 	        
 	    } else {

@@ -152,15 +152,6 @@ public class Viaje implements Comparable<Viaje> {
 	@Setter
 	private Usuario pasajero;
 	
-	
-	
-	@Pasajero
-	@Column(length = Documento.MAX_LEN, nullable = true)
-	@PropertyLayout(fieldSetId = "contactDetails", sequence = "1.6")
-	@Getter
-	@Setter
-	private String prueba;
-
 	@Column(name = "fecha", nullable = false)
 	@Getter
 	@Setter
