@@ -48,7 +48,7 @@ public class HomePageViewModel_libroViajes {
         if (usuario != null) {
             Licencia licencia = usuario.getLicencia();
 
-            if (Licencia.NoContiene.equals(licencia)) {
+            if (Licencia.Nocontiene.equals(licencia)) {
                 messageService.raiseError("El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
                 LOG.error("Error:El usuario seleccionado no puede realizar este viaje porque no tiene licencia.");
                 return homePageViewModel;
