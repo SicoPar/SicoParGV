@@ -90,7 +90,7 @@ public class Usuario implements Comparable<Usuario> {
 	public String RepoNombre(){ return this.nombre;}
     public String RepoApellido(){ return this.apellido;}
     public String RepoDocumento(){ return this.documento;}
-    public LocalDate RepoFechaNacimiento(){ return this.fechaNacimiento;}
+    public String RepoFechaNacimiento(){ return this.fechaNacimiento;}
     public Sector RepoSector() { return this.sector;}
     public String RepoCiudad() {return this.ciudad;}
     public Genero RepoGenero() {return this.genero;}
@@ -103,7 +103,7 @@ public class Usuario implements Comparable<Usuario> {
 		return withName(apellido, null,null,null,null,null,null,null,null,null);
 	}
 
-	public static Usuario withName(String apellido, String nombre,String documento ,LocalDate fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono) {
+	public static Usuario withName(String apellido, String nombre,String documento ,String fecha_nacimiento,Sector sector,String ciudad,Genero genero,Licencia licencia, String email , String telefono) {
 		val Usuario = new Usuario();
 		Usuario.setApellido(apellido);
 		Usuario.setNombre(nombre);
@@ -167,7 +167,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Setter
 	
 	@PropertyLayout(fieldSetId = "name", sequence = "4")
-	private LocalDate fechaNacimiento;
+	private String fechaNacimiento;
 	
 	@Enumerated(EnumType.STRING)                                
 	@Column(nullable = false)
@@ -222,7 +222,7 @@ public class Usuario implements Comparable<Usuario> {
 
 	@Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 	@ActionLayout(associateWith = "Usuario", promptStyle = PromptStyle.DIALOG_MODAL)
-	public Usuario updateName(@Name final String apellido, @Nombre final String nombre,@Documento String documento, LocalDate fechaNacimiento,Sector sector,
+	public Usuario updateName(@Name final String apellido, @Nombre final String nombre,@Documento String documento, String fechaNacimiento,Sector sector,
 			String ciudad,Genero genero,Licencia licencia,String email,String telefono) {
 		setApellido(apellido);
 		setNombre(nombre);

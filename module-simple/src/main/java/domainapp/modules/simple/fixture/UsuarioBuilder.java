@@ -25,7 +25,7 @@ public class UsuarioBuilder extends BuilderScriptWithResult<Usuario> {
     @Getter @Setter
     private String documento;
     @Getter @Setter
-    private LocalDate fecha_nacimiento;
+    private String fecha_nacimiento;
     @Getter @Setter
     private Sector sector;
     @Getter @Setter

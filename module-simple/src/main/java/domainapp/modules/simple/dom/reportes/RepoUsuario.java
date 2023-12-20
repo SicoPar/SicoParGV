@@ -11,7 +11,7 @@ public class RepoUsuario {
 	 private String nombre;
 	    private String apellido;
 	    private String documento;
-	    private LocalDate fechaNacimiento;
+	    private String fechaNacimiento;
 	    private Sector sector;
 	    private String ciudad;
 	    private Genero genero;
@@ -20,7 +20,7 @@ public class RepoUsuario {
 	    private String telefono;
 	    
 
-	    public RepoUsuario(String nombre, String apellido, String documento, LocalDate fechaNacimiento, Sector sector, String ciudad, Genero genero, Licencia licencia, String email, String telefono){
+	    public RepoUsuario(String nombre, String apellido, String documento, String fechaNacimiento, Sector sector, String ciudad, Genero genero, Licencia licencia, String email, String telefono){
 	        this.nombre = nombre;
 	        this.apellido = apellido;
 	        this.documento= documento;
@@ -41,7 +41,7 @@ public class RepoUsuario {
 
 	    public String getDocumento(){ return this.documento;}
 	    
-	    public LocalDate getFechaNacimiento(){ return this.fechaNacimiento;}
+	    public String getFechaNacimiento(){ return this.fechaNacimiento;}
 	    
 	    public Sector getSector(){ return this.sector;}	    
 

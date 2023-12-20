@@ -70,7 +70,7 @@ public class Usuarios {
 	@Action(semantics = SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(promptStyle = PromptStyle.INLINE)
 	public Usuario CrearUsuario(@Name final String apellido, @Nombre final String nombre, @Documento final String documento,
-			final LocalDate fecha_nacimiento,Sector sectores,@Ciudad String ciudad,Genero genero,Licencia licencia, @Email final String email, @Telefono final String telefono
+			final String fecha_nacimiento,Sector sectores,@Ciudad String ciudad,Genero genero,Licencia licencia, @Email final String email, @Telefono final String telefono
 
 	) {
 		return repositoryService.persist(Usuario.withName(apellido, nombre,documento,fecha_nacimiento,sectores,ciudad,genero,licencia,email, telefono));
